@@ -41,7 +41,9 @@ export function Process() {
       const mm = gsap.matchMedia();
 
       mm.add("(min-width: 768px)", () => {
-        const cards = section.querySelectorAll<HTMLElement>(".process-card");
+        const cards = section.querySelectorAll<HTMLElement>(
+          ".process-pin .process-card"
+        );
         if (!cards.length) return;
 
         cards.forEach((card, i) => {
@@ -62,7 +64,9 @@ export function Process() {
           }
         });
 
-        const progressLine = section.querySelector<HTMLElement>(".process-progress-line");
+        const progressLine = section.querySelector<HTMLElement>(
+          ".process-pin .process-progress-line"
+        );
         if (progressLine) {
           gsap.set(progressLine, { scaleY: 0, transformOrigin: "top center" });
         }

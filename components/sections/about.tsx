@@ -50,7 +50,7 @@ export function About() {
           },
         });
 
-        const panels = gsap.utils.toArray<HTMLElement>(".about-panel");
+        const panels = gsap.utils.toArray<HTMLElement>(".about-panel", track);
         const inners = panels
           .map((p) => p.querySelector<HTMLElement>(".about-panel-inner"))
           .filter((el): el is HTMLElement => el !== null);

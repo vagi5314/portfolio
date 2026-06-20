@@ -179,9 +179,13 @@ export function ReelSection() {
         const summariesEl = summariesRef.current;
         if (summariesEl) {
           const summaryItems = Array.from(
-            summariesEl.querySelectorAll<HTMLElement>(".reel-summary-item")
+            summariesEl.querySelectorAll<HTMLElement>(
+              ".reel-pin .reel-summary-item"
+            )
           );
-          const progressLabel = summariesEl.querySelector<HTMLElement>(".reel-summaries-progress");
+          const progressLabel = summariesEl.querySelector<HTMLElement>(
+            ".reel-pin .reel-summaries-progress"
+          );
           const n = summaryItems.length;
           if (n > 0) {
             summaryItems.forEach((item, i) => {
