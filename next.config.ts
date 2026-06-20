@@ -10,7 +10,18 @@ const securityHeaders = [
   { key: "Referrer-Policy", value: "strict-origin-when-cross-origin" },
   {
     key: "Permissions-Policy",
-    value: "camera=(), microphone=(), geolocation=(), interest-cohort=()",
+    value: [
+      "camera=()",
+      "microphone=()",
+      "geolocation=()",
+      "interest-cohort=()",
+      "browsing-topics=()",
+      "payment=()",
+      "usb=()",
+      "magnetometer=()",
+      "gyroscope=()",
+      "accelerometer=()",
+    ].join(", "),
   },
   {
     key: "Content-Security-Policy",
@@ -25,6 +36,8 @@ const securityHeaders = [
       "frame-ancestors 'none'",
       "base-uri 'self'",
       "object-src 'none'",
+      "worker-src 'self' blob:",
+      "manifest-src 'self'",
     ].join("; "),
   },
 ];
@@ -32,6 +45,7 @@ const securityHeaders = [
 const nextConfig: NextConfig = {
   reactStrictMode: true,
   poweredByHeader: false,
+  productionBrowserSourceMaps: false,
   images: {
     formats: ["image/avif", "image/webp"],
     qualities: [25, 50, 75, 100],

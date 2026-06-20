@@ -125,8 +125,7 @@ export function About() {
     <section
       ref={ref}
       id="about"
-      className="relative bg-ink"
-      style={{ height: "600vh" }}
+      className="relative bg-ink h-auto md:[height:600vh]"
     >
       <div className="about-pin sticky top-0 h-screen w-full overflow-hidden bg-ink" style={{ zIndex: 'var(--z-section-pin)' } as React.CSSProperties}>
         <div className="absolute left-6 top-12 right-6 z-10 flex items-baseline justify-end font-mono text-xs uppercase tracking-[0.25em] text-[var(--foreground-secondary)] md:right-[calc(var(--nav-rail-safe)+1.5rem)]">

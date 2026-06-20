@@ -3,6 +3,7 @@
 import { useEffect, useRef } from "react";
 import { usePathname } from "next/navigation";
 import Lenis from "lenis";
+import "lenis/dist/lenis.css";
 import { gsap, ScrollTrigger } from "@/lib/gsap";
 
 const SCROLL_KEY = "portfolio:scroll:";
@@ -51,14 +52,33 @@ export function SmoothScrollProvider({
     ).matches;
     if (reduceMotion) return;
 
-    const lenis = new Lenis();
+    const lenis = new Lenis({
+      duration: 1.2,
+      smoothWheel: true,
+      syncTouch: false,
+      touchMultiplier: 1.5,
+      wheelMultiplier: 1.2,
+    });
     lenisRef.current = lenis;
 
     lenis.on("scroll", ScrollTrigger.update);
 
     const tick = (time: number) => lenis.raf(time * 1000);
     gsap.ticker.add(tick);
-    gsap.ticker.lagSmoothing(500, 33);
+    gsap.ticker.lagSmoothing(0);
+
+    const coarseMql = window.matchMedia("(pointer: coarse)");
+    const onCoarseChange = () => {
+      if (!lenisRef.current) return;
+      if (coarseMql.matches) {
+        lenisRef.current.options.touchMultiplier = 1.5;
+        lenisRef.current.options.duration = 1.4;
+      } else {
+        lenisRef.current.options.touchMultiplier = 1;
+        lenisRef.current.options.duration = 1.2;
+      }
+    };
+    coarseMql.addEventListener("change", onCoarseChange);
 
     (window as unknown as { __lenis?: Lenis }).__lenis = lenis;
 
@@ -76,6 +96,7 @@ export function SmoothScrollProvider({
 
     return () => {
       writeSavedScroll(pathnameRef.current, lenis.scroll);
+      coarseMql.removeEventListener("change", onCoarseChange);
       gsap.ticker.remove(tick);
       lenis.destroy();
       if ((window as unknown as { __lenis?: Lenis }).__lenis === lenis) {

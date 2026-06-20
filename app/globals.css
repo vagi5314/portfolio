@@ -233,6 +233,21 @@ textarea:focus-visible {
   outline-offset: 3px;
 }
 
+/* Mobile UX — kill the 300ms tap delay on all interactive elements
+   and prevent iOS from zooming the layout when an input is focused
+   by enforcing a 16px minimum font-size on form fields. */
+button,
+[role="button"],
+a[href] {
+  touch-action: manipulation;
+}
+
+input,
+textarea,
+select {
+  font-size: max(16px, 1rem);
+}
+
 @utility hairline {
   border-color: color-mix(in oklch, var(--color-bone) 12%, transparent);
 }

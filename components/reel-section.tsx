@@ -294,8 +294,7 @@ export function ReelSection() {
       <section
         ref={pinRef}
         id="work"
-        className="relative"
-        style={{ height: "500vh" }}
+        className="relative h-auto md:[height:500vh]"
       >
         <div
           className="reel-pin sticky top-0 h-screen w-full overflow-hidden bg-ink"
@@ -395,8 +394,7 @@ export function ReelSection() {
       <section
         ref={summariesRef}
         id="work-summaries"
-        className="relative bg-ink"
-        style={{ height: `${Math.max(800, projects.length * 250)}vh` }}
+        className="relative bg-ink h-auto md:[height:1000vh]"
       >
         <div
           className="reel-pin sticky top-0 flex h-screen w-full items-center overflow-hidden bg-ink"

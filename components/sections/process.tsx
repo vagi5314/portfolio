@@ -120,8 +120,7 @@ export function Process() {
     <section
       ref={ref}
       id="process"
-      className="bg-ink"
-      style={{ height: "500vh" }}
+      className="bg-ink h-auto md:[height:500vh]"
     >
       <div className="process-pin sticky top-0 h-screen w-full overflow-hidden bg-ink" style={{ zIndex: 'var(--z-section-pin)' } as React.CSSProperties}>
         <div className="mx-auto flex h-full w-full max-w-[1400px] flex-col px-6 py-10">
