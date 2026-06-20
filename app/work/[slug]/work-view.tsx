@@ -247,7 +247,7 @@ export function WorkView({ project, next, index, total }: Props) {
         <div className="mx-auto w-full max-w-[1400px] px-6">
           <div className="mb-8 flex items-center justify-between font-mono text-xs uppercase tracking-[0.25em] text-ink-2">
             <WarpLink
-              href="/"
+              href="/#work"
               data-cursor="link"
               className="inline-flex items-center gap-2 transition-colors hover:text-rust"
             >
@@ -408,7 +408,7 @@ export function WorkView({ project, next, index, total }: Props) {
         <div className="mx-auto flex w-full max-w-[1400px] flex-col gap-12 px-6">
           <div className="flex flex-col gap-3 md:flex-row md:items-end md:justify-between">
             <WarpLink
-              href="/"
+              href="/#work"
               data-cursor="link"
               className="font-mono text-xs uppercase tracking-[0.25em] text-bone-2 transition-colors hover:text-rust"
             >

@@ -15,7 +15,18 @@ export function ImageDistortion({ children, className }: ImageDistortionProps) {
   const filterRef = useRef<SVGFilterElement>(null);
   const [active, setActive] = useState(false);
 
+  // Touch-only devices never trigger mouse hover, and SVG feTurbulence
+  // (numOctaves: 2) is CPU-bound — animating baseFrequency on every
+  // hover would burn battery and drop frames on phones. The reel card
+  // also wraps the distortion in RGBShift + Image, so the visual
+  // effect of a static filter on touch is invisible anyway.
+  const canHover =
+    typeof window !== "undefined"
+      ? window.matchMedia("(hover: hover)").matches
+      : true;
+
   const handleMouseEnter = useCallback(() => {
+    if (!canHover) return;
     setActive(true);
     if (!filterRef.current) return;
     const turb = filterRef.current.querySelector("feTurbulence");
@@ -25,9 +36,10 @@ export function ImageDistortion({ children, className }: ImageDistortionProps) {
       duration: 0.4,
       ease: "power2.out",
     });
-  }, []);
+  }, [canHover]);
 
   const handleMouseLeave = useCallback(() => {
+    if (!canHover) return;
     if (!filterRef.current) return;
     const turb = filterRef.current.querySelector("feTurbulence");
     if (!turb) return;
@@ -37,7 +49,7 @@ export function ImageDistortion({ children, className }: ImageDistortionProps) {
       ease: "power2.out",
       onComplete: () => setActive(false),
     });
-  }, []);
+  }, [canHover]);
 
   return (
     <div

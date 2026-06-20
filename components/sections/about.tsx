@@ -62,14 +62,24 @@ export function About() {
           // Cache the last opacity we wrote per element so we skip the
           // style mutation when the value hasn't moved. With 4 panels
           // scrubbing at 60Hz this turns ~480 writes/sec into ~80.
+          // Panel 0 (the "I model the seams of data" panel) is exempt:
+          // it's the first thing the user sees at the top of the pin,
+          // and if the tween's onUpdate fires late on a back-nav or
+          // initial mount, panel 0 must already be visible.
           const lastInnerOp = new Float32Array(inners.length);
           const lastCornerOp = new Float32Array(corners.length);
-          inners.forEach((el) => {
-            el.style.opacity = "0";
+          inners.forEach((el, i) => {
+            if (i === 0) {
+              el.style.opacity = "1";
+            } else {
+              el.style.opacity = "0";
+            }
             el.style.willChange = "opacity";
           });
-          corners.forEach((el) => {
-            el.style.willChange = "opacity";
+          corners.forEach((el, i) => {
+            if (i !== 0) {
+              el.style.willChange = "opacity";
+            }
           });
 
           const totalDistance = () =>
@@ -86,6 +96,7 @@ export function About() {
             const panelStride = window.innerWidth;
             const offset = p * totalDistance();
             for (let i = 0; i < panels.length; i++) {
+              if (i === 0) continue;
               const panelLeft = i * panelStride;
               const viewportLeft = offset;
               const overlap = Math.max(

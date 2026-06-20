@@ -50,9 +50,7 @@ export function SmoothScrollProvider({
     const reduceMotion = window.matchMedia(
       "(prefers-reduced-motion: reduce)"
     ).matches;
-    if (reduceMotion) return;
-
-    const lenis = new Lenis({
+    if (reduceMotion) return;    const lenis = new Lenis({
       duration: 1.2,
       smoothWheel: true,
       syncTouch: false,
@@ -126,6 +124,33 @@ export function SmoothScrollProvider({
       lenisRef.current.scrollTo(target, { immediate: true });
       ScrollTrigger.refresh();
     });
+  }, [pathname]);
+
+  // Hash navigation: on every mount or hashchange, scroll the matching
+  // element into view via Lenis. This is what makes `/#work` from the
+  // WorkView back link land on the work section, not the top of the page.
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+
+    const tryScrollToHash = () => {
+      const hash = window.location.hash;
+      if (!hash || hash.length < 2) return;
+      const id = hash.slice(1);
+      const el = document.getElementById(id);
+      if (!el) return;
+      const scroll = () => {
+        if (window.__lenis) {
+          window.__lenis.scrollTo(el, { offset: -24, force: true });
+        } else {
+          requestAnimationFrame(scroll);
+        }
+      };
+      scroll();
+    };
+
+    tryScrollToHash();
+    window.addEventListener("hashchange", tryScrollToHash);
+    return () => window.removeEventListener("hashchange", tryScrollToHash);
   }, [pathname]);
 
   return <>{children}</>;
