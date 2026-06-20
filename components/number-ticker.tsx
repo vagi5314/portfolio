@@ -1,7 +1,6 @@
 "use client";
 
-import { useRef } from "react";
-import { gsap, useGSAP, ScrollTrigger } from "@/lib/gsap";
+import { useEffect, useRef, useState } from "react";
 import { cn } from "@/lib/utils";
 
 interface NumberTickerProps {
@@ -12,14 +11,15 @@ interface NumberTickerProps {
   decimals?: number;
 }
 
-function render(el: HTMLElement, v: number, decimals: number, suffix: string) {
-  if (!el.isConnected) return;
+function format(v: number, decimals: number): string {
   if (decimals > 0) {
-    const fixed = v.toFixed(decimals);
-    el.textContent = fixed.replace(/\B(?=(\d{3})+(?!\d))/g, ",") + suffix;
-    return;
+    return v.toFixed(decimals).replace(/\B(?=(\d{3})+(?!\d))/g, ",");
   }
-  el.textContent = Math.round(v).toLocaleString("en-US") + suffix;
+  return Math.round(v).toLocaleString("en-US");
+}
+
+function easeOutCubic(t: number): number {
+  return 1 - Math.pow(1 - t, 3);
 }
 
 export function NumberTicker({
@@ -30,42 +30,80 @@ export function NumberTicker({
   decimals = 0,
 }: NumberTickerProps) {
   const ref = useRef<HTMLSpanElement>(null);
-  const hasRun = useRef(false);
-  const tweenRef = useRef<gsap.core.Tween | null>(null);
+  const [display, setDisplay] = useState<string>(() => format(0, decimals));
 
-  useGSAP(
-    () => {
-      const el = ref.current;
-      if (!el) return;
-      render(el, 0, decimals, suffix);
+  useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
 
-      const obj = { v: 0 };
-      const trig = ScrollTrigger.create({
-        trigger: el,
-        start: "top 90%",
-        once: true,
-        onEnter: () => {
-          if (hasRun.current) return;
-          hasRun.current = true;
-          tweenRef.current = gsap.to(obj, {
-            v: value,
-            duration,
-            ease: "power3.out",
-            onUpdate: () => render(el, obj.v, decimals, suffix),
-          });
-        },
-      });
-      return () => {
-        tweenRef.current?.kill();
-        trig.kill();
+    setDisplay(format(0, decimals));
+
+    let raf = 0;
+    let cancelled = false;
+
+    const animate = () => {
+      if (cancelled) return;
+      const startTime = performance.now();
+      const start = 0;
+      const end = value;
+      const step = (now: number) => {
+        if (cancelled) return;
+        const elapsed = now - startTime;
+        const t = Math.min(elapsed / (duration * 1000), 1);
+        const eased = easeOutCubic(t);
+        const current = start + (end - start) * eased;
+        setDisplay(format(current, decimals));
+        if (t < 1) {
+          raf = requestAnimationFrame(step);
+        } else {
+          setDisplay(format(end, decimals));
+        }
       };
-    },
-    { scope: ref }
-  );
+      raf = requestAnimationFrame(step);
+    };
+
+    if (typeof IntersectionObserver === "undefined") {
+      animate();
+      return () => {
+        cancelled = true;
+        if (raf) cancelAnimationFrame(raf);
+      };
+    }
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        for (const entry of entries) {
+          if (entry.isIntersecting) {
+            animate();
+            observer.disconnect();
+            return;
+          }
+        }
+      },
+      { threshold: 0.1, rootMargin: "0px 0px -10% 0px" }
+    );
+
+    observer.observe(el);
+
+    const fallback = window.setTimeout(() => {
+      if (!cancelled) {
+        animate();
+        observer.disconnect();
+      }
+    }, 1200);
+
+    return () => {
+      cancelled = true;
+      window.clearTimeout(fallback);
+      observer.disconnect();
+      if (raf) cancelAnimationFrame(raf);
+    };
+  }, [value, duration, decimals]);
 
   return (
     <span ref={ref} className={cn("tabular-nums", className)}>
-      {`${(decimals > 0 ? (0).toFixed(decimals) : 0)}${suffix}`}
+      {display}
+      {suffix}
     </span>
   );
 }
