@@ -63,10 +63,28 @@ function mixPose(a: Pose, b: Pose, t: number): Pose {
   };
 }
 
+function easeInOutCubic(t: number): number {
+  return t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
+}
+
 function poseAt(i: number, p: number): Pose {
-  if (p < 0.33) return mixPose(SCATTERED[i], CIRCLE[i], p / 0.33);
-  if (p < 0.66) return mixPose(CIRCLE[i], ARC[i], (p - 0.33) / 0.33);
-  return mixPose(ARC[i], GRID[i], (p - 0.66) / 0.34);
+  let a: Pose;
+  let b: Pose;
+  let t: number;
+  if (p < 0.33) {
+    a = SCATTERED[i];
+    b = CIRCLE[i];
+    t = p / 0.33;
+  } else if (p < 0.66) {
+    a = CIRCLE[i];
+    b = ARC[i];
+    t = (p - 0.33) / 0.33;
+  } else {
+    a = ARC[i];
+    b = GRID[i];
+    t = (p - 0.66) / 0.34;
+  }
+  return mixPose(a, b, easeInOutCubic(t));
 }
 
 function poseAtProgress(p: number): Pose[] {
@@ -76,7 +94,7 @@ function poseAtProgress(p: number): Pose[] {
 export function ReelSection() {
   const pinRef = useRef<HTMLElement>(null);
   const coverRefs = useRef<(HTMLAnchorElement | null)[]>([]);
-  const summariesRef = useRef<HTMLDivElement>(null);
+  const summariesRef = useRef<HTMLElement>(null);
   const reduced = useReducedMotion();
 
   const setCoverRef = useCallback(
@@ -88,201 +106,206 @@ export function ReelSection() {
 
   useGSAP(
     () => {
-      if (reduced || !pinRef.current) return;
-      if (typeof window === "undefined") return;
+      if (reduced || typeof window === "undefined") return;
 
-      const covers = coverRefs.current.filter(
-        (c): c is HTMLAnchorElement => c !== null
-      );
-      if (covers.length === 0) return;
+      const mm = gsap.matchMedia();
 
-      const pinEl = pinRef.current;
-      const headerEl = pinEl.querySelector<HTMLElement>(".reel-stage-header");
-      const eyebrowEl = pinEl.querySelector<HTMLElement>(".reel-eyebrow");
-      const footEl = pinEl.querySelector<HTMLElement>(".reel-foot");
-      const stageProgress = pinEl.querySelector<HTMLElement>(".reel-stage-progress");
-
-      let vw = window.innerWidth;
-      let vh = window.innerHeight;
-
-      const applyPose = (i: number, pose: Pose) => {
-        const c = covers[i];
-        c.style.width = `${pose.widthVw}vw`;
-        c.style.zIndex = String(pose.z);
-        const tx = (pose.xPct * vw) / 100;
-        const ty = (pose.yPct * vh) / 100;
-        c.style.transform = `translate3d(calc(-50% + ${tx}px), calc(-50% + ${ty}px), 0) scale(${pose.scale}) rotate(${pose.rot}deg)`;
-      };
-
-      const applyAllPoses = (poses: Pose[]) => {
-        for (let i = 0; i < covers.length; i++) applyPose(i, poses[i]);
-      };
-
-      applyAllPoses(SCATTERED);
-
-      const st = ScrollTrigger.create({
-        trigger: pinEl,
-        start: "top top",
-        end: "bottom bottom",
-        pin: ".reel-pin",
-        scrub: 0.3,
-        anticipatePin: 1,
-        invalidateOnRefresh: true,
-        onRefresh: () => {
-          vw = window.innerWidth;
-          vh = window.innerHeight;
-        },
-        onUpdate: (self) => {
-          const p = self.progress;
-          const poses = poseAtProgress(p);
-
-          for (let i = 0; i < covers.length; i++) {
-            applyPose(i, poses[i]);
-          }
-
-          if (headerEl) {
-            headerEl.style.opacity = String(Math.max(0, 1 - p * 3));
-          }
-          if (eyebrowEl) {
-            eyebrowEl.style.opacity = String(Math.max(0, 1 - p * 5));
-          }
-          if (footEl) {
-            footEl.style.opacity = String(Math.min(1, Math.max(0, (p - 0.45) * 2)));
-          }
-          if (stageProgress) {
-            const bar = stageProgress.querySelector<HTMLElement>(".reel-stage-bar");
-            if (bar) bar.style.transform = `scaleX(${Math.min(1, Math.max(0, p))})`;
-          }
-        },
-      });
-
-      const summariesEl = summariesRef.current;
-      if (summariesEl) {
-        const summaryItems = Array.from(
-          summariesEl.querySelectorAll<HTMLElement>(".reel-summary-item")
+      mm.add("(min-width: 768px)", () => {
+        const covers = coverRefs.current.filter(
+          (c): c is HTMLAnchorElement => c !== null
         );
-        const progressLabel = summariesEl.querySelector<HTMLElement>(".reel-summaries-progress");
-        const n = summaryItems.length;
-        if (n > 0) {
-          summaryItems.forEach((item, i) => {
-            const cover = item.querySelector<HTMLElement>(".reel-summary-cover > div");
-            const title = item.querySelector<HTMLElement>(".reel-summary-title");
-            const body = item.querySelector<HTMLElement>(".reel-summary-body");
-            const stack = item.querySelector<HTMLElement>(".reel-summary-stack");
-            const cta = item.querySelector<HTMLElement>(".reel-summary-cta");
-            if (i === 0) {
-              gsap.set(item, { opacity: 1, y: 0, pointerEvents: "auto" });
-              if (cover) gsap.set(cover, { scale: 1, filter: "brightness(1)" });
-              if (title) gsap.set(title, { clipPath: "inset(0 0% 0 0)", y: 0 });
-              if (body) gsap.set(body, { y: 0, opacity: 1 });
-              if (stack) gsap.set(stack.children, { y: 0, opacity: 1 });
-              if (cta) gsap.set(cta, { y: 0, opacity: 1 });
-            } else {
-              gsap.set(item, { opacity: 0, y: 60, pointerEvents: "none" });
-              if (cover) gsap.set(cover, { scale: 0.92, filter: "brightness(0.6)" });
-              if (title) gsap.set(title, { clipPath: "inset(0 100% 0 0)", y: 24 });
-              if (body) gsap.set(body, { y: 16, opacity: 0 });
-              if (stack) gsap.set(stack.children, { y: 12, opacity: 0 });
-              if (cta) gsap.set(cta, { y: 12, opacity: 0 });
-            }
-          });
+        if (covers.length === 0) return;
 
-          const seg = 1 / n;
-          const fadeDur = 0.3 * seg;
-          const tl = gsap.timeline({
-            scrollTrigger: {
-              trigger: summariesEl,
-              start: "top top",
-              end: "bottom bottom",
-              scrub: 0.8,
-              anticipatePin: 1,
-            },
-          });
+        const pinEl = pinRef.current;
+        const headerEl = pinEl?.querySelector<HTMLElement>(".reel-stage-header");
+        const eyebrowEl = pinEl?.querySelector<HTMLElement>(".reel-eyebrow");
+        const footEl = pinEl?.querySelector<HTMLElement>(".reel-foot");
+        const stageProgress = pinEl?.querySelector<HTMLElement>(".reel-stage-progress");
 
-          summaryItems.forEach((item, i) => {
-            if (i === 0) return;
-            const tIn = i * seg;
-            const cover = item.querySelector<HTMLElement>(".reel-summary-cover > div");
-            const title = item.querySelector<HTMLElement>(".reel-summary-title");
-            const body = item.querySelector<HTMLElement>(".reel-summary-body");
-            const stack = item.querySelector<HTMLElement>(".reel-summary-stack");
-            const cta = item.querySelector<HTMLElement>(".reel-summary-cta");
+        let vw = window.innerWidth;
+        let vh = window.innerHeight;
 
-            tl.to(
-              item,
-              { opacity: 1, y: 0, duration: fadeDur, ease: "power2.out" },
-              tIn
-            );
-            tl.set(item, { pointerEvents: "auto" }, tIn);
-            if (cover) {
-              tl.to(
-                cover,
-                { scale: 1, filter: "brightness(1)", duration: fadeDur, ease: "power2.out" },
-                tIn
-              );
-            }
-            if (title) {
-              tl.to(
-                title,
-                { clipPath: "inset(0 0% 0 0)", y: 0, duration: fadeDur, ease: "power3.out" },
-                tIn
-              );
-            }
-            if (body) {
-              tl.to(
-                body,
-                { y: 0, opacity: 1, duration: fadeDur, ease: "power2.out" },
-                tIn
-              );
-            }
-            if (stack) {
-              tl.to(
-                stack.children,
-                { y: 0, opacity: 1, duration: fadeDur, ease: "power2.out", stagger: 0.02 },
-                tIn
-              );
-            }
-            if (cta) {
-              tl.to(
-                cta,
-                { y: 0, opacity: 1, duration: fadeDur, ease: "power2.out" },
-                tIn
-              );
-            }
-          });
+        const applyPose = (i: number, pose: Pose) => {
+          const c = covers[i];
+          c.style.width = `${pose.widthVw}vw`;
+          c.style.zIndex = String(pose.z);
+          const tx = (pose.xPct * vw) / 100;
+          const ty = (pose.yPct * vh) / 100;
+          c.style.transform = `translate3d(calc(-50% + ${tx}px), calc(-50% + ${ty}px), 0) scale(${pose.scale}) rotate(${pose.rot}deg)`;
+        };
 
-          summaryItems.forEach((item, i) => {
-            if (i === n - 1) return;
-            const tOut = (i + 1) * seg - fadeDur;
-            tl.to(
-              item,
-              { opacity: 0, y: -40, duration: fadeDur, ease: "power2.in" },
-              tOut
-            );
-            tl.set(item, { pointerEvents: "none" }, tOut);
-          });
+        const applyAllPoses = (poses: Pose[]) => {
+          for (let i = 0; i < covers.length; i++) applyPose(i, poses[i]);
+        };
 
-          if (progressLabel) {
-            tl.to(
-              progressLabel,
-              {
-                onUpdate: function () {
-                  const p = this.progress();
-                  const idx = Math.min(n, Math.max(1, Math.floor(p * n) + 1));
-                  progressLabel.textContent = `${idx.toString().padStart(2, "0")} / ${n
-                    .toString()
-                    .padStart(2, "0")}`;
-                },
+        applyAllPoses(SCATTERED);
+
+        const st = ScrollTrigger.create({
+          trigger: pinEl,
+          start: "top top",
+          end: "bottom bottom",
+          pin: ".reel-pin",
+          scrub: 0.5,
+          anticipatePin: 1,
+          invalidateOnRefresh: true,
+          onRefresh: () => {
+            vw = window.innerWidth;
+            vh = window.innerHeight;
+          },
+          onUpdate: (self) => {
+            const p = self.progress;
+            const poses = poseAtProgress(p);
+
+            for (let i = 0; i < covers.length; i++) {
+              applyPose(i, poses[i]);
+            }
+
+            if (headerEl) {
+              headerEl.style.opacity = String(Math.max(0, 1 - p * 3));
+            }
+            if (eyebrowEl) {
+              eyebrowEl.style.opacity = String(Math.max(0, 1 - p * 5));
+            }
+            if (footEl) {
+              footEl.style.opacity = String(Math.min(1, Math.max(0, (p - 0.45) * 2)));
+            }
+            if (stageProgress) {
+              const bar = stageProgress.querySelector<HTMLElement>(".reel-stage-bar");
+              if (bar) bar.style.transform = `scaleX(${Math.min(1, Math.max(0, p))})`;
+            }
+          },
+        });
+
+        const summariesEl = summariesRef.current;
+        if (summariesEl) {
+          const summaryItems = Array.from(
+            summariesEl.querySelectorAll<HTMLElement>(".reel-summary-item")
+          );
+          const progressLabel = summariesEl.querySelector<HTMLElement>(".reel-summaries-progress");
+          const n = summaryItems.length;
+          if (n > 0) {
+            summaryItems.forEach((item, i) => {
+              const cover = item.querySelector<HTMLElement>(".reel-summary-cover > div");
+              const title = item.querySelector<HTMLElement>(".reel-summary-title");
+              const body = item.querySelector<HTMLElement>(".reel-summary-body");
+              const stack = item.querySelector<HTMLElement>(".reel-summary-stack");
+              const cta = item.querySelector<HTMLElement>(".reel-summary-cta");
+              if (i === 0) {
+                gsap.set(item, { opacity: 1, y: 0, pointerEvents: "auto" });
+                if (cover) gsap.set(cover, { scale: 1, filter: "brightness(1)" });
+                if (title) gsap.set(title, { clipPath: "inset(0 0% 0 0)", y: 0 });
+                if (body) gsap.set(body, { y: 0, opacity: 1 });
+                if (stack) gsap.set(stack.children, { y: 0, opacity: 1 });
+                if (cta) gsap.set(cta, { y: 0, opacity: 1 });
+              } else {
+                gsap.set(item, { opacity: 0, y: 60, pointerEvents: "none" });
+                if (cover) gsap.set(cover, { scale: 0.92, filter: "brightness(0.6)" });
+                if (title) gsap.set(title, { clipPath: "inset(0 100% 0 0)", y: 24 });
+                if (body) gsap.set(body, { y: 16, opacity: 0 });
+                if (stack) gsap.set(stack.children, { y: 12, opacity: 0 });
+                if (cta) gsap.set(cta, { y: 12, opacity: 0 });
+              }
+            });
+
+            const seg = 1 / n;
+            const fadeDur = 0.3 * seg;
+            const tl = gsap.timeline({
+              scrollTrigger: {
+                trigger: summariesEl,
+                start: "top top",
+                end: "bottom bottom",
+                scrub: 0.8,
+                anticipatePin: 1,
               },
-              0
-            );
+            });
+
+            summaryItems.forEach((item, i) => {
+              if (i === 0) return;
+              const tIn = i * seg;
+              const cover = item.querySelector<HTMLElement>(".reel-summary-cover > div");
+              const title = item.querySelector<HTMLElement>(".reel-summary-title");
+              const body = item.querySelector<HTMLElement>(".reel-summary-body");
+              const stack = item.querySelector<HTMLElement>(".reel-summary-stack");
+              const cta = item.querySelector<HTMLElement>(".reel-summary-cta");
+
+              tl.to(
+                item,
+                { opacity: 1, y: 0, duration: fadeDur, ease: "power2.out" },
+                tIn
+              );
+              tl.set(item, { pointerEvents: "auto" }, tIn);
+              if (cover) {
+                tl.to(
+                  cover,
+                  { scale: 1, filter: "brightness(1)", duration: fadeDur, ease: "power2.out" },
+                  tIn
+                );
+              }
+              if (title) {
+                tl.to(
+                  title,
+                  { clipPath: "inset(0 0% 0 0)", y: 0, duration: fadeDur, ease: "power3.out" },
+                  tIn
+                );
+              }
+              if (body) {
+                tl.to(
+                  body,
+                  { y: 0, opacity: 1, duration: fadeDur, ease: "power2.out" },
+                  tIn
+                );
+              }
+              if (stack) {
+                tl.to(
+                  stack.children,
+                  { y: 0, opacity: 1, duration: fadeDur, ease: "power2.out", stagger: 0.02 },
+                  tIn
+                );
+              }
+              if (cta) {
+                tl.to(
+                  cta,
+                  { y: 0, opacity: 1, duration: fadeDur, ease: "power2.out" },
+                  tIn
+                );
+              }
+            });
+
+            summaryItems.forEach((item, i) => {
+              if (i === n - 1) return;
+              const tOut = (i + 1) * seg - fadeDur;
+              tl.to(
+                item,
+                { opacity: 0, y: -40, duration: fadeDur, ease: "power2.in" },
+                tOut
+              );
+              tl.set(item, { pointerEvents: "none" }, tOut);
+            });
+
+            if (progressLabel) {
+              tl.to(
+                progressLabel,
+                {
+                  onUpdate: function () {
+                    const p = this.progress();
+                    const idx = Math.min(n, Math.max(1, Math.floor(p * n) + 1));
+                    progressLabel.textContent = `${idx.toString().padStart(2, "0")} / ${n
+                      .toString()
+                      .padStart(2, "0")}`;
+                  },
+                },
+                0
+              );
+            }
           }
         }
-      }
 
-      return () => {
-        st.kill();
-      };
+        return () => {
+          st.kill();
+        };
+      });
+
+      return () => mm.revert();
     },
     { scope: pinRef }
   );
@@ -292,10 +315,10 @@ export function ReelSection() {
       <section
         ref={pinRef}
         id="work"
-        className="relative h-auto md:[height:500vh]"
+        className="relative md:[height:500vh]"
       >
         <div
-          className="reel-pin sticky top-0 h-screen w-full overflow-hidden bg-ink"
+          className="reel-pin sticky top-0 hidden h-screen w-full overflow-hidden bg-ink md:block"
           style={{
             zIndex: "var(--z-section-pin)",
             isolation: "isolate",
@@ -382,15 +405,86 @@ export function ReelSection() {
             </div>
           </div>
         </div>
+
+        <div className="block bg-ink md:hidden">
+          <div className="px-6 pb-10 pt-24">
+            <h2 className="font-[family-name:var(--font-instrument-serif)] text-4xl font-normal leading-[1.05] tracking-[-0.01em] text-bone text-balance">
+              Selected work, with{" "}
+              <em className="italic text-rust">receipts</em>.
+            </h2>
+            <p className="mt-4 font-mono text-xs uppercase tracking-[0.25em] text-bone-2">
+              {projects.length.toString().padStart(2, "0")} projects · scroll to read
+            </p>
+          </div>
+
+          <div className="space-y-12 px-6 pb-24">
+            {projects.map((p, i) => (
+              <article key={p.slug}>
+                <WarpLink
+                  href={`/work/${p.slug}`}
+                  data-cursor="project"
+                  data-cursor-thumb={p.thumb}
+                  data-cursor-label={p.title}
+                  data-cursor-tag={p.tag}
+                  data-project-slug={p.slug}
+                  className="block"
+                  viewTransitionName={`cs-${p.slug}`}
+                  aria-label={`Open case study: ${p.title}`}
+                >
+                  <div className="relative aspect-[16/10] w-full overflow-hidden border border-bone/10 bg-ink-2">
+                    <Image
+                      src={p.cover}
+                      alt={`${p.title} cover`}
+                      fill
+                      sizes="100vw"
+                      className="object-cover"
+                      loading={i === 0 ? "eager" : "lazy"}
+                    />
+                    <div className="absolute inset-0 ring-1 ring-inset ring-bone/5" />
+                    <span className="absolute left-3 top-3 z-10 rounded-full bg-ink/70 px-2 py-1 font-mono text-[10px] uppercase tracking-[0.22em] text-bone backdrop-blur-sm">
+                      {(i + 1).toString().padStart(2, "0")} · {p.tag}
+                    </span>
+                  </div>
+                </WarpLink>
+                <div className="mt-4 flex items-baseline gap-3 font-mono text-[10px] uppercase tracking-[0.25em] text-bone-2">
+                  <span className="font-display text-3xl font-light tracking-[-0.02em] text-rust">
+                    {(i + 1).toString().padStart(2, "0")}
+                  </span>
+                  <span className="block h-px flex-1 bg-bone/15" />
+                  <span>{p.tag}</span>
+                </div>
+                <h3 className="mt-3 font-[family-name:var(--font-instrument-serif)] text-3xl font-normal leading-[1.05] tracking-[-0.01em] text-bone text-balance">
+                  {p.title}
+                </h3>
+                <p className="mt-3 font-mono text-sm leading-[1.7] text-bone-2 text-pretty">
+                  {p.summary}
+                </p>
+                <WarpLink
+                  href={`/work/${p.slug}`}
+                  data-cursor="project"
+                  data-cursor-thumb={p.thumb}
+                  data-cursor-label={p.title}
+                  data-cursor-tag={p.tag}
+                  data-project-slug={p.slug}
+                  className="mt-5 inline-flex items-center gap-2 border-b border-rust pb-1 font-mono text-xs uppercase tracking-[0.25em] text-bone"
+                  viewTransitionName={`cs-${p.slug}`}
+                >
+                  Read case study
+                  <ArrowUpRight size={14} strokeWidth={1.5} />
+                </WarpLink>
+              </article>
+            ))}
+          </div>
+        </div>
       </section>
 
       <section
         ref={summariesRef}
         id="work-summaries"
-        className="relative bg-ink h-auto md:[height:1000vh]"
+        className="relative md:[height:1000vh]"
       >
         <div
-          className="reel-pin sticky top-0 flex h-screen w-full items-center overflow-hidden bg-ink"
+          className="reel-pin sticky top-0 hidden h-screen w-full items-center overflow-hidden bg-ink md:flex"
           style={{
             zIndex: "var(--z-section-pin)",
             isolation: "isolate",
@@ -487,6 +581,91 @@ export function ReelSection() {
           <div className="pointer-events-none absolute bottom-8 left-6 right-6 z-10 flex items-center justify-between font-mono text-xs uppercase tracking-[0.25em] text-bone-2 md:right-[calc(var(--nav-rail-safe)+1.5rem)]">
             <span>Scroll to read</span>
             <span className="reel-summaries-progress" />
+          </div>
+        </div>
+
+        <div className="block bg-ink md:hidden">
+          <div className="px-6 pb-8 pt-20">
+            <p className="font-mono text-xs uppercase tracking-[0.25em] text-bone-2">
+              The four that <em className="italic text-rust">made the cut</em>
+            </p>
+            <p className="mt-2 font-mono text-xs uppercase tracking-[0.25em] text-bone-2/60">
+              {projects.length.toString().padStart(2, "0")} projects · 2026
+            </p>
+          </div>
+
+          <div className="space-y-20 px-6 pb-24">
+            {projects.map((p, i) => (
+              <article key={p.slug}>
+                <div className="mb-6 flex items-center gap-4 font-mono text-xs uppercase tracking-[0.32em] text-bone-2">
+                  <span className="font-display text-5xl font-light tracking-[-0.02em] text-rust">
+                    {(i + 1).toString().padStart(2, "0")}
+                  </span>
+                  <span className="block h-px flex-1 bg-bone/15" />
+                  <span>{p.tag}</span>
+                </div>
+
+                <h3 className="font-[family-name:var(--font-instrument-serif)] text-5xl font-normal leading-[0.95] tracking-[-0.01em] text-bone text-balance">
+                  {p.title}
+                </h3>
+
+                <p className="mt-8 font-mono text-sm leading-[1.7] text-bone-2 text-pretty">
+                  {p.summary}
+                </p>
+
+                <ul className="mt-8 flex flex-wrap gap-2">
+                  {p.stack.map((s) => (
+                    <li
+                      key={s}
+                      className="inline-flex items-center rounded-full border border-bone/15 px-3 py-1 font-mono text-xs text-bone-2"
+                    >
+                      {s}
+                    </li>
+                  ))}
+                </ul>
+
+                <WarpLink
+                  href={`/work/${p.slug}`}
+                  data-cursor="project"
+                  data-cursor-thumb={p.thumb}
+                  data-cursor-label={p.title}
+                  data-cursor-tag={p.tag}
+                  data-project-slug={p.slug}
+                  className="mt-8 inline-flex items-center gap-2 border-b border-rust pb-1 font-mono text-xs uppercase tracking-[0.25em] text-bone"
+                  viewTransitionName={`cs-${p.slug}`}
+                  aria-label={`Open case study: ${p.title}`}
+                >
+                  Read case study
+                  <ArrowUpRight size={14} strokeWidth={1.5} />
+                </WarpLink>
+
+                <div className="mt-10">
+                  <WarpLink
+                    href={`/work/${p.slug}`}
+                    data-cursor="project"
+                    data-cursor-thumb={p.thumb}
+                    data-cursor-label={p.title}
+                    data-cursor-tag={p.tag}
+                    data-project-slug={p.slug}
+                    className="block"
+                    viewTransitionName={`cs-${p.slug}`}
+                    aria-label={`Open case study: ${p.title}`}
+                  >
+                    <div className="relative aspect-[16/10] w-full overflow-hidden border border-bone/10 bg-ink-2">
+                      <Image
+                        src={p.cover}
+                        alt={`${p.title} cover`}
+                        fill
+                        sizes="100vw"
+                        className="object-cover"
+                        loading={i === 0 ? "eager" : "lazy"}
+                      />
+                      <div className="absolute inset-0 ring-1 ring-inset ring-bone/5" />
+                    </div>
+                  </WarpLink>
+                </div>
+              </article>
+            ))}
           </div>
         </div>
       </section>

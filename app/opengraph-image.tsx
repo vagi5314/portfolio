@@ -80,7 +80,7 @@ export default function OG() {
           }}
         >
           <span>Four projects · 2026</span>
-          <span>vagi.dev</span>
+          <span>portfolio-nine-kohl-x71b83bwy1.vercel.app</span>
         </div>
       </div>
     ),

@@ -4,7 +4,7 @@ A cinematic 2D scroll portfolio. No 3D, no marketing fluff — just the work, to
 
 **Stack:** Next.js 16 (App Router) · React 19 · TypeScript · Tailwind v4 · GSAP + Lenis · Vercel
 
-**Live:** <https://vagi.dev>
+**Live:** <https://portfolio-nine-kohl-x71b83bwy1.vercel.app>
 
 ## What's in here
 

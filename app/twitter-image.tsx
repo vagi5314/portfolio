@@ -80,7 +80,7 @@ export default function Twitter() {
           }}
         >
           <span>{SITE.location}</span>
-          <span>vagi.dev</span>
+          <span>portfolio-nine-kohl-x71b83bwy1.vercel.app</span>
         </div>
       </div>
     ),

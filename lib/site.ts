@@ -1,5 +1,5 @@
 export const SITE = {
-  url: "https://vagi.dev",
+  url: "https://portfolio-nine-kohl-x71b83bwy1.vercel.app",
   author: "VAGISAN S",
   email: "vagi5314@gmail.com",
   github: "https://github.com/vagi5314",
