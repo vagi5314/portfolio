@@ -8,9 +8,16 @@ import { SITE } from "@/lib/site";
 
 const skillGroups = [
   { label: "Languages", items: ["Python", "SQL"] },
-  { label: "Data", items: ["Pandas", "NumPy", "PyArrow"] },
-  { label: "ML", items: ["scikit-learn", "LightGBM", "SHAP"] },
-  { label: "Workflow", items: ["n8n", "FastAPI", "Docker", "Git"] },
+  { label: "Data", items: ["Pandas", "NumPy", "PyArrow", "SciPy"] },
+  {
+    label: "ML",
+    items: ["scikit-learn", "LightGBM", "XGBoost", "SHAP", "Statsmodels"],
+  },
+  { label: "Visualization", items: ["Matplotlib", "Seaborn", "Plotly", "Streamlit"] },
+  {
+    label: "Workflow",
+    items: ["n8n", "FastAPI", "Docker", "Git", "GitHub Actions", "MongoDB"],
+  },
 ];
 
 export function About() {
@@ -190,7 +197,7 @@ export function About() {
             <h3 className="mt-8 font-[family-name:var(--font-instrument-serif)] text-3xl font-normal leading-[1.05] tracking-[-0.01em] text-bone md:text-5xl">
               A data-science stack, plus <em className="italic text-rust">n8n</em>.
             </h3>
-            <div className="mt-10 grid grid-cols-2 gap-x-12 gap-y-8">
+            <div className="mt-10 grid grid-cols-1 gap-x-12 gap-y-8 md:grid-cols-2">
               {skillGroups.map((group) => (
                 <div key={group.label}>
                   <div className="mb-3 flex items-center gap-3">
