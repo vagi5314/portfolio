@@ -29,12 +29,13 @@ export const projects: Project[] = [
   {
     slug: "aero-metric",
     title: "AeroMetric",
-    tag: "Aviation · ML",
+    tag: "Data Science · ML",
     role: "Solo build",
     year: 2026,
     cover: "/projects/aero-metric/cover.svg",
     thumb: "/projects/aero-metric/thumb.svg",
     github: "https://github.com/vagi5314/Flight_predictor",
+    live: "https://flight-predictor-4z38.vercel.app/",
     stack: ["Python", "LightGBM", "FastAPI", "Next.js 15", "PyArrow", "SHAP"],
     summary:
       "Predicting flight delays across 5.8M historical flights — LightGBM with SHAP explainability, FastAPI serving, and a Next.js dashboard for risk decomposition.",
@@ -95,12 +96,13 @@ export const projects: Project[] = [
   {
     slug: "global-ai-readiness",
     title: "Global AI Readiness",
-    tag: "Data Science · Visualization",
+    tag: "Data Science · Index",
     role: "Solo build",
     year: 2026,
     cover: "/projects/global-ai-readiness/cover.svg",
     thumb: "/projects/global-ai-readiness/thumb.svg",
     github: "https://github.com/vagi5314/Global_ai_readiness",
+    live: "https://global-ai-readiness.vercel.app/",
     stack: ["Python", "Pandas", "scikit-learn", "Next.js", "Recharts"],
     summary:
       "A 0–100 AI readiness index for 26 nations — KNN imputation, log + Min-Max scaling, exported as a static JSON warehouse consumed by a Next.js dashboard.",
@@ -162,7 +164,7 @@ export const projects: Project[] = [
   {
     slug: "jobflow",
     title: "JobFlow",
-    tag: "Orchestration · n8n",
+    tag: "n8n · Job Search",
     role: "Solo build",
     year: 2026,
     cover: "/projects/jobflow/cover.svg",
@@ -230,7 +232,7 @@ export const projects: Project[] = [
   {
     slug: "leadsentry",
     title: "LeadSentry",
-    tag: "Inbound · n8n",
+    tag: "n8n · Lead Qualifying",
     role: "Solo build",
     year: 2026,
     cover: "/projects/leadsentry/cover.svg",

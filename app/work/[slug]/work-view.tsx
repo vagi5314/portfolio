@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
+import { ArrowUpRight } from "lucide-react";
 import { gsap, useGSAP, ScrollTrigger } from "@/lib/gsap";
 import { useReducedMotion } from "@/lib/use-reduced-motion";
 import { WarpLink } from "@/components/warp-link";
@@ -324,7 +325,7 @@ export function WorkView({ project, next, index, total }: Props) {
             </ul>
           </div>
 
-          <div className="md:col-span-7">
+          <div className="md:col-span-5">
             <p className="mb-4 font-mono text-xs uppercase tracking-[0.25em] text-ink-2">
               Summary
             </p>
@@ -332,6 +333,50 @@ export function WorkView({ project, next, index, total }: Props) {
               {project.summary}
             </p>
           </div>
+
+          {(project.live || project.github) && (
+            <div className="md:col-span-2">
+              <p className="mb-4 font-mono text-xs uppercase tracking-[0.25em] text-ink-2">
+                View
+              </p>
+              <ul className="flex flex-col gap-2 font-mono text-xs">
+                {project.live && (
+                  <li>
+                    <a
+                      data-cursor="link"
+                      href={project.live}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="group inline-flex items-center gap-1 text-ink transition-colors hover:text-rust"
+                    >
+                      Live
+                      <ArrowUpRight
+                        size={12}
+                        className="transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5"
+                      />
+                    </a>
+                  </li>
+                )}
+                {project.github && (
+                  <li>
+                    <a
+                      data-cursor="link"
+                      href={project.github}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="group inline-flex items-center gap-1 text-ink transition-colors hover:text-rust"
+                    >
+                      Source
+                      <ArrowUpRight
+                        size={12}
+                        className="transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5"
+                      />
+                    </a>
+                  </li>
+                )}
+              </ul>
+            </div>
+          )}
 
           <div className="grid grid-cols-2 gap-8 md:col-span-12 md:mt-2 md:grid-cols-3 md:gap-10">
             {project.metrics.map((m) => (

@@ -6,8 +6,10 @@ import { NumberTicker } from "@/components/number-ticker";
 import { useReducedMotion } from "@/lib/use-reduced-motion";
 
 const metrics = [
-  { value: 4, suffix: "", decimals: 0, label: "Projects shipped", sub: "shipped in 2026" },
   { value: 5.8, suffix: "M", decimals: 1, label: "Rows in production", sub: "AeroMetric training set" },
+  { value: 26, suffix: "", decimals: 0, label: "Nations indexed", sub: "Global AI Readiness" },
+  { value: 1457, suffix: "", decimals: 0, label: "Skills in vocabulary", sub: "JobFlow · 15 industries" },
+  { value: 100, suffix: "/100", decimals: 0, label: "Tests passing", sub: "LeadSentry audit suite" },
 ];
 
 export function Metrics() {
@@ -83,7 +85,7 @@ export function Metrics() {
           <span className="headline-line block">as of today.</span>
         </h2>
 
-        <div className="metrics-grid grid grid-cols-2 gap-12 md:grid-cols-2">
+        <div className="metrics-grid grid grid-cols-2 gap-12 md:grid-cols-4 md:gap-8">
           {metrics.map((m, i) => (
             <div key={i} className="metric-card space-y-2 border-l pl-6" style={{ borderColor: 'color-mix(in oklch, var(--foreground) 12%, transparent)' }}>
               <p className="font-mono text-xs uppercase tracking-[0.25em] text-[var(--foreground-secondary)]">

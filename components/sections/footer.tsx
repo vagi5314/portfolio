@@ -175,7 +175,7 @@ export function Footer() {
           <div className="md:col-span-2 font-mono text-xs uppercase tracking-[0.25em] text-[var(--foreground-secondary)]">
             <p>© {year} · {SITE.author}</p>
             <p className="mt-1">{SITE.location}</p>
-            <p className="mt-3 text-[var(--foreground)]">{SITE.author} — Data Science · n8n</p>
+            <p className="mt-3 text-[var(--foreground)]">Data Science · n8n orchestrations</p>
             <p className="mt-1">Built with Next.js · GSAP · Tailwind</p>
             <p className="mt-1">Résumé available on request</p>
             <button
