@@ -44,7 +44,7 @@ export function About() {
             start: "top top",
             end: "+=500%",
             pin: ".about-pin",
-            scrub: 0.6,
+            scrub: 0.3,
             invalidateOnRefresh: true,
             anticipatePin: 1,
           },
@@ -96,9 +96,15 @@ export function About() {
               Math.min(panelLeft + panelStride, viewportLeft + window.innerWidth) -
                 Math.max(panelLeft, viewportLeft)
             );
-            const op = Math.max(0, Math.min(1, overlap / panelStride));
+            const vf = Math.max(0, Math.min(1, overlap / panelStride));
+            const op =
+              vf < 0.2
+                ? vf / 0.2
+                : vf > 0.8
+                  ? Math.max(0, (1 - vf) / 0.2)
+                  : 1;
             if (inners[i]) setOp(inners[i], lastInnerOp, i, op);
-            if (corners[i]) setOp(corners[i], lastCornerOp, i, op > 0.3 ? op : 0);
+            if (corners[i]) setOp(corners[i], lastCornerOp, i, op);
           }
         };
 
