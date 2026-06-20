@@ -33,17 +33,17 @@ export function Process() {
 
   useGSAP(
     () => {
-      if (reduced) return;
-      if (typeof window === "undefined") return;
+      if (reduced || typeof window === "undefined") return;
 
       const section = ref.current;
       if (!section) return;
 
-      const cards = section.querySelectorAll<HTMLElement>(".process-card");
-      if (!cards.length) return;
-
       const mm = gsap.matchMedia();
-      mm.add("(prefers-reduced-motion: no-preference)", () => {
+
+      mm.add("(min-width: 768px)", () => {
+        const cards = section.querySelectorAll<HTMLElement>(".process-card");
+        if (!cards.length) return;
+
         cards.forEach((card, i) => {
           const num = card.querySelector<HTMLElement>(".process-num");
           const title = card.querySelector<HTMLElement>(".process-title");
@@ -91,11 +91,7 @@ export function Process() {
           if (!num || !title || !body || !rule) return;
           const t = i;
 
-          tl.to(
-            rule,
-            { scaleX: 1, duration: 0.3, ease: "power3.out" },
-            t
-          );
+          tl.to(rule, { scaleX: 1, duration: 0.3, ease: "power3.out" }, t);
           tl.to(
             [num, body],
             { opacity: 1, y: 0, duration: 0.35, ease: "power2.out" },
@@ -120,15 +116,17 @@ export function Process() {
     <section
       ref={ref}
       id="process"
-      className="bg-ink h-auto md:[height:500vh]"
+      className="bg-ink md:[height:500vh]"
     >
-      <div className="process-pin sticky top-0 h-screen w-full overflow-hidden bg-ink" style={{ zIndex: 'var(--z-section-pin)' } as React.CSSProperties}>
+      <div
+        className="process-pin sticky top-0 hidden h-screen w-full overflow-hidden bg-ink md:block"
+        style={{ zIndex: "var(--z-section-pin)" } as React.CSSProperties}
+      >
         <div className="mx-auto flex h-full w-full max-w-[1400px] flex-col px-6 py-10">
           <div className="mb-6 flex items-baseline justify-end font-mono text-xs uppercase tracking-[0.25em] text-[var(--foreground-secondary)] md:pr-[var(--nav-rail-safe)]">
             <span>Scroll to read · 4 steps</span>
           </div>
 
-          {/* Progress line */}
           <div className="absolute left-6 top-24 bottom-12 hidden w-px bg-bone/10 md:block">
             <div className="process-progress-line absolute inset-0 w-full h-full bg-rust origin-top scale-y-0" />
           </div>
@@ -160,6 +158,41 @@ export function Process() {
               </article>
             ))}
           </div>
+        </div>
+      </div>
+
+      <div className="block bg-ink md:hidden">
+        <div className="px-6 pb-8 pt-20">
+          <p className="font-mono text-xs uppercase tracking-[0.25em] text-bone-2/70">
+            Process · 4 steps
+          </p>
+          <h2 className="mt-4 font-[family-name:var(--font-instrument-serif)] text-4xl leading-[1.05] tracking-[-0.01em] text-bone text-balance">
+            How I work, in <em className="italic text-rust">four steps</em>.
+          </h2>
+        </div>
+
+        <div className="space-y-12 px-6 pb-24">
+          {steps.map((step) => (
+            <article
+              key={step.n}
+              className="process-card relative flex flex-col gap-3 border-t border-bone/10 pt-5"
+            >
+              <div className="absolute inset-x-0 top-0 h-px origin-left scale-x-100 bg-rust" />
+
+              <div className="flex items-baseline gap-4">
+                <div className="font-display text-3xl font-light leading-none tracking-[-0.02em] text-bone-2/40">
+                  {step.n}
+                </div>
+                <h3 className="flex-1 font-display text-2xl font-light leading-[1.1] tracking-[-0.02em] text-bone text-balance">
+                  {step.title}
+                </h3>
+              </div>
+
+              <p className="max-w-3xl font-mono text-sm leading-relaxed text-bone-2 text-pretty">
+                {step.body}
+              </p>
+            </article>
+          ))}
         </div>
       </div>
     </section>

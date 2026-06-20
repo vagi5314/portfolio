@@ -27,110 +27,89 @@ export function About() {
 
   useGSAP(
     () => {
-      if (reduced) return;
-      if (typeof window === "undefined") return;
+      if (reduced || typeof window === "undefined") return;
 
       const section = ref.current;
       const track = trackRef.current;
       if (!section || !track) return;
 
       const mm = gsap.matchMedia();
-      mm.add(
-        {
-          isDesktop: "(min-width: 768px) and (prefers-reduced-motion: no-preference)",
-          isMobile: "(max-width: 767px)",
-        },
-        (ctx) => {
-          const { isDesktop } = ctx.conditions as { isDesktop: boolean; isMobile: boolean };
-          if (!isDesktop) return;
 
-          const tween = gsap.to(track, {
-            x: () => -(track.scrollWidth - window.innerWidth),
-            ease: "none",
-            scrollTrigger: {
-              trigger: section,
-              start: "top top",
-              end: "+=500%",
-              pin: ".about-pin",
-              scrub: 0.6,
-              invalidateOnRefresh: true,
-              anticipatePin: 1,
-            },
-          });
+      mm.add("(min-width: 768px)", () => {
+        const tween = gsap.to(track, {
+          x: () => -(track.scrollWidth - window.innerWidth),
+          ease: "none",
+          scrollTrigger: {
+            trigger: section,
+            start: "top top",
+            end: "+=500%",
+            pin: ".about-pin",
+            scrub: 0.6,
+            invalidateOnRefresh: true,
+            anticipatePin: 1,
+          },
+        });
 
-          const panels = gsap.utils.toArray<HTMLElement>(".about-panel");
-          const inners = panels
-            .map((p) => p.querySelector<HTMLElement>(".about-panel-inner"))
-            .filter((el): el is HTMLElement => el !== null);
-          const corners = panels
-            .map((p) => p.querySelector<HTMLElement>(".about-panel-corner"))
-            .filter((el): el is HTMLElement => el !== null);
+        const panels = gsap.utils.toArray<HTMLElement>(".about-panel");
+        const inners = panels
+          .map((p) => p.querySelector<HTMLElement>(".about-panel-inner"))
+          .filter((el): el is HTMLElement => el !== null);
+        const corners = panels
+          .map((p) => p.querySelector<HTMLElement>(".about-panel-corner"))
+          .filter((el): el is HTMLElement => el !== null);
 
-          // Cache the last opacity we wrote per element so we skip the
-          // style mutation when the value hasn't moved. With 4 panels
-          // scrubbing at 60Hz this turns ~480 writes/sec into ~80.
-          // Panel 0 (the "I model the seams of data" panel) is exempt:
-          // it's the first thing the user sees at the top of the pin,
-          // and if the tween's onUpdate fires late on a back-nav or
-          // initial mount, panel 0 must already be visible.
-          const lastInnerOp = new Float32Array(inners.length);
-          const lastCornerOp = new Float32Array(corners.length);
-          inners.forEach((el, i) => {
-            if (i === 0) {
-              el.style.opacity = "1";
-            } else {
-              el.style.opacity = "0";
-            }
+        const lastInnerOp = new Float32Array(inners.length);
+        const lastCornerOp = new Float32Array(corners.length);
+        inners.forEach((el, i) => {
+          if (i === 0) {
+            el.style.opacity = "1";
+          } else {
+            el.style.opacity = "0";
+          }
+          el.style.willChange = "opacity";
+        });
+        corners.forEach((el, i) => {
+          if (i !== 0) {
             el.style.willChange = "opacity";
-          });
-          corners.forEach((el, i) => {
-            if (i !== 0) {
-              el.style.willChange = "opacity";
-            }
-          });
+          }
+        });
 
-          const totalDistance = () =>
-            window.innerWidth * Math.max(0, panels.length - 1);
+        const totalDistance = () =>
+          window.innerWidth * Math.max(0, panels.length - 1);
 
-          const setOp = (el: HTMLElement, slot: Float32Array, i: number, v: number) => {
-            if (Math.abs(slot[i] - v) < 0.01) return;
-            slot[i] = v;
-            gsap.set(el, { opacity: v });
-          };
+        const setOp = (el: HTMLElement, slot: Float32Array, i: number, v: number) => {
+          if (Math.abs(slot[i] - v) < 0.01) return;
+          slot[i] = v;
+          gsap.set(el, { opacity: v });
+        };
 
-          const updatePanelOpacities = () => {
-            const p = tween.progress();
-            const panelStride = window.innerWidth;
-            const offset = p * totalDistance();
-            for (let i = 0; i < panels.length; i++) {
-              if (i === 0) continue;
-              const panelLeft = i * panelStride;
-              const viewportLeft = offset;
-              const overlap = Math.max(
-                0,
-                Math.min(panelLeft + panelStride, viewportLeft + window.innerWidth) -
-                  Math.max(panelLeft, viewportLeft)
-              );
-              // Linear ramp from 0 (panel out of viewport) to 1 (panel
-              // fully covering the viewport). The previous formula
-              // peaked at 50% overlap, so the panel the user was
-              // actively looking at was invisible and only the
-              // partially-in neighbours were visible.
-              const op = Math.max(0, Math.min(1, overlap / panelStride));
-              if (inners[i]) setOp(inners[i], lastInnerOp, i, op);
-              if (corners[i]) setOp(corners[i], lastCornerOp, i, op > 0.3 ? op : 0);
-            }
-          };
+        const updatePanelOpacities = () => {
+          const p = tween.progress();
+          const panelStride = window.innerWidth;
+          const offset = p * totalDistance();
+          for (let i = 0; i < panels.length; i++) {
+            if (i === 0) continue;
+            const panelLeft = i * panelStride;
+            const viewportLeft = offset;
+            const overlap = Math.max(
+              0,
+              Math.min(panelLeft + panelStride, viewportLeft + window.innerWidth) -
+                Math.max(panelLeft, viewportLeft)
+            );
+            const op = Math.max(0, Math.min(1, overlap / panelStride));
+            if (inners[i]) setOp(inners[i], lastInnerOp, i, op);
+            if (corners[i]) setOp(corners[i], lastCornerOp, i, op > 0.3 ? op : 0);
+          }
+        };
 
-          tween.eventCallback("onUpdate", updatePanelOpacities);
-          updatePanelOpacities();
+        tween.eventCallback("onUpdate", updatePanelOpacities);
+        updatePanelOpacities();
 
-          return () => {
-            tween.eventCallback("onUpdate", null);
-            tween.kill();
-          };
-        }
-      );
+        return () => {
+          tween.eventCallback("onUpdate", null);
+          tween.kill();
+        };
+      });
 
       return () => {
         mm.revert();
@@ -143,17 +122,19 @@ export function About() {
     <section
       ref={ref}
       id="about"
-      className="relative bg-ink h-auto md:[height:600vh]"
+      className="relative bg-ink md:[height:600vh]"
     >
-      <div className="about-pin sticky top-0 h-screen w-full overflow-hidden bg-ink" style={{ zIndex: 'var(--z-section-pin)' } as React.CSSProperties}>
+      <div
+        className="about-pin sticky top-0 hidden h-screen w-full overflow-hidden bg-ink md:block"
+        style={{ zIndex: "var(--z-section-pin)" } as React.CSSProperties}
+      >
         <div className="absolute left-6 top-12 right-6 z-10 flex items-baseline justify-end font-mono text-xs uppercase tracking-[0.25em] text-[var(--foreground-secondary)] md:right-[calc(var(--nav-rail-safe)+1.5rem)]">
           <span>Scroll horizontally · 4 panels</span>
         </div>
 
         <div
           ref={trackRef}
-          className="flex h-full will-change-transform md:flex-row flex-col md:overflow-visible overflow-y-auto md:snap-none snap-y"
-          style={{ width: "max-content" }}
+          className="flex h-full w-max will-change-transform"
         >
           <Panel index={1} total={4}>
             <p className="font-mono text-xs uppercase tracking-[0.32em] text-bone-2/70">
@@ -243,6 +224,103 @@ export function About() {
           </Panel>
         </div>
       </div>
+
+      <div className="block bg-ink md:hidden">
+        <div className="px-6 pb-8 pt-20">
+          <p className="font-mono text-xs uppercase tracking-[0.25em] text-bone-2/70">
+            About · 4 panels
+          </p>
+        </div>
+
+        <div className="flex flex-col">
+          <Panel index={1} total={4}>
+            <p className="font-mono text-xs uppercase tracking-[0.32em] text-bone-2/70">
+              01 / 04
+            </p>
+            <h2 className="mt-6 font-[family-name:var(--font-instrument-serif)] text-5xl font-normal leading-[1.0] tracking-[-0.02em] text-bone text-balance">
+              I model the{" "}
+              <em className="italic text-rust">seams</em> of data.
+            </h2>
+            <div className="mt-10 grid max-w-md grid-cols-[auto_1fr] gap-x-4 font-mono text-sm leading-[1.7] text-bone-2 text-pretty">
+              <span aria-hidden className="font-[family-name:var(--font-instrument-serif)] text-4xl leading-none text-rust">
+                M
+              </span>
+              <p>
+                odels with receipts. Pipelines that ship. n8n
+                automations that actually fire when the trigger does.
+              </p>
+            </div>
+          </Panel>
+
+          <Panel index={2} total={4} variant="ink-2">
+            <p className="font-mono text-xs uppercase tracking-[0.32em] text-bone-2/70">
+              02 / 04 · Who
+            </p>
+            <p className="mt-6 max-w-2xl font-[family-name:var(--font-instrument-serif)] text-2xl leading-[1.4] tracking-[-0.01em] text-bone text-balance">
+              I&apos;m a <em className="italic text-rust">data scientist</em>.
+              I ship ML models, data pipelines, and{" "}
+              <em className="italic text-rust">n8n</em> orchestrations —
+              <em className="italic text-rust"> 4</em> shipped projects,
+              <em className="italic text-rust"> 5.8M</em> rows in production.
+            </p>
+            <div className="mt-10 max-w-md font-mono text-sm leading-relaxed text-bone-2/80 text-pretty">
+              The data is the work. The dashboards inside the case studies are just how the results land.
+            </div>
+          </Panel>
+
+          <Panel index={3} total={4}>
+            <p className="font-mono text-xs uppercase tracking-[0.32em] text-bone-2/70">
+              03 / 04 · Stack
+            </p>
+            <h3 className="mt-6 font-[family-name:var(--font-instrument-serif)] text-3xl font-normal leading-[1.05] tracking-[-0.01em] text-bone">
+              A data-science stack, plus <em className="italic text-rust">n8n</em>.
+            </h3>
+            <div className="mt-8 grid grid-cols-1 gap-x-8 gap-y-6">
+              {skillGroups.map((group) => (
+                <div key={group.label}>
+                  <div className="mb-2 flex items-center gap-3">
+                    <span className="h-px w-4 bg-bone/30" />
+                    <span className="font-mono text-xs uppercase tracking-[0.22em] text-bone-2">
+                      {group.label}
+                    </span>
+                  </div>
+                  <div className="flex flex-wrap gap-2">
+                    {group.items.map((item, i) => (
+                      <span
+                        key={`${group.label}-${item}-${i}`}
+                        className="inline-block rounded-full border border-bone/15 px-3 py-1 font-mono text-xs text-bone-2"
+                      >
+                        {item}
+                      </span>
+                    ))}
+                  </div>
+                </div>
+              ))}
+            </div>
+          </Panel>
+
+          <Panel index={4} total={4} variant="rust">
+            <p className="font-mono text-xs uppercase tracking-[0.32em] text-bone/80">
+              04 / 04 · Now
+            </p>
+            <h3 className="mt-6 font-[family-name:var(--font-instrument-serif)] text-4xl font-normal leading-[0.95] tracking-[-0.02em] text-bone text-balance">
+              Open to final-year{" "}
+              <em className="italic">roles</em> in 2026.
+            </h3>
+            <div className="mt-10 space-y-3 font-mono text-sm leading-relaxed text-bone">
+              <p>Data science · ML engineering · n8n orchestration.</p>
+              <p>Small teams, hard data, shipped artifacts.</p>
+              <p>{SITE.location} · open to remote.</p>
+            </div>
+            <a
+              href={`mailto:${SITE.email}`}
+              className="mt-10 inline-flex h-12 items-center gap-3 border-b border-bone/50 pb-1 font-display text-xl text-bone"
+            >
+              {SITE.email} →
+            </a>
+          </Panel>
+        </div>
+      </div>
     </section>
   );
 }
@@ -261,7 +339,7 @@ function Panel({
   return (
     <article
       className={cn(
-        "about-panel relative flex h-screen w-screen shrink-0 flex-col justify-center px-12 md:px-24 md:pr-[calc(var(--nav-rail-safe)+3rem)] snap-start",
+        "about-panel relative flex w-full shrink-0 flex-col justify-center px-6 py-16 md:h-screen md:w-screen md:px-24 md:py-0 md:pr-[calc(var(--nav-rail-safe)+3rem)]",
         variant === "ink" && "bg-ink text-bone",
         variant === "ink-2" && "bg-ink-2 text-bone",
         variant === "rust" && "text-bone"
@@ -272,10 +350,10 @@ function Panel({
           : undefined
       }
     >
-      <div className="about-panel-inner mx-auto w-full max-w-5xl will-change-transform">
+      <div className="about-panel-inner mx-auto w-full max-w-5xl">
         {children}
       </div>
-      <div className="about-panel-corner absolute bottom-12 left-12 font-mono text-xs uppercase tracking-[0.32em] text-bone-2/70 md:left-24">
+      <div className="about-panel-corner mt-12 font-mono text-xs uppercase tracking-[0.32em] text-bone-2/70 md:absolute md:bottom-12 md:left-24 md:mt-0">
         Panel {index.toString().padStart(2, "0")} / {total.toString().padStart(2, "0")}
       </div>
     </article>
