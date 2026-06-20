@@ -50,3 +50,5 @@ next-env.d.ts
 /*.log
 !/dev/.gitkeep
 /test-audit.mjs
+
+.vercel

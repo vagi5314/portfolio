@@ -1,7 +1,7 @@
 "use client";
 
 import { useRef } from "react";
-import { ArrowUpRight, ArrowUp } from "lucide-react";
+import { ArrowUp } from "lucide-react";
 import { gsap, useGSAP } from "@/lib/gsap";
 import { useReducedMotion } from "@/lib/use-reduced-motion";
 import { SITE } from "@/lib/site";
@@ -38,25 +38,6 @@ export function Footer() {
           }
         );
       }
-
-      // Stagger reveal for links
-      const links = section.querySelectorAll(".footer-link");
-      gsap.fromTo(
-        links,
-        { y: 20, opacity: 0 },
-        {
-          y: 0,
-          opacity: 1,
-          duration: 0.6,
-          ease: "power2.out",
-          stagger: 0.08,
-          scrollTrigger: {
-            trigger: section.querySelector(".footer-links"),
-            start: "top 90%",
-            once: true,
-          },
-        }
-      );
 
       // SVG mark draw
       const mark = section.querySelectorAll<SVGPathElement>(".footer-mark");
@@ -122,57 +103,7 @@ export function Footer() {
             </svg>
           </div>
 
-          <div className="footer-links md:col-span-3">            <p className="mb-3 font-mono text-xs uppercase tracking-[0.25em] text-[var(--foreground-secondary)]">
-              Elsewhere
-            </p>
-            <ul className="flex flex-col items-start space-y-1.5 font-mono text-sm text-[var(--foreground)]">
-              <li className="footer-link">
-                <a
-                  data-cursor="link"
-                  href={SITE.github}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="group inline-flex items-center gap-1 transition-colors hover:text-[var(--accent)]"
-                >
-                  GitHub
-                  <ArrowUpRight
-                    size={12}
-                    className="transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5"
-                  />
-                </a>
-              </li>
-              <li className="footer-link">
-                <a
-                  data-cursor="link"
-                  href={`mailto:${SITE.email}`}
-                  className="group inline-flex items-center gap-1 transition-colors hover:text-[var(--accent)]"
-                >
-                  Email
-                  <ArrowUpRight
-                    size={12}
-                    className="transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5"
-                  />
-                </a>
-              </li>
-              <li className="footer-link">
-                <a
-                  data-cursor="link"
-                  href={SITE.linkedin}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="group inline-flex items-center gap-1 transition-colors hover:text-[var(--accent)]"
-                >
-                  LinkedIn
-                  <ArrowUpRight
-                    size={12}
-                    className="transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5"
-                  />
-                </a>
-              </li>
-            </ul>
-          </div>
-
-          <div className="md:col-span-2 font-mono text-xs uppercase tracking-[0.25em] text-[var(--foreground-secondary)]">
+          <div className="md:col-span-5 font-mono text-xs uppercase tracking-[0.25em] text-[var(--foreground-secondary)]">
             <p>© {year} · {SITE.author}</p>
             <p className="mt-1">{SITE.location}</p>
             <p className="mt-3 text-[var(--foreground)]">Data Science · n8n orchestrations</p>

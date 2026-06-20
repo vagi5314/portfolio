@@ -302,6 +302,58 @@ export function WorkView({ project, next, index, total }: Props) {
         <ScrollHint />
       </section>
 
+      {(project.live || project.github) && (
+        <section
+          aria-label="Project links"
+          className="border-b border-ink/15 bg-bone-2 py-10 md:py-14"
+        >
+          <div className="mx-auto grid w-full max-w-[1400px] grid-cols-1 gap-6 px-6 md:grid-cols-12 md:items-center md:gap-12">
+            <div className="md:col-span-4">
+              <p className="font-mono text-xs uppercase tracking-[0.25em] text-ink-2">
+                See it in action
+              </p>
+              <p className="mt-2 font-display text-xl leading-tight tracking-[-0.01em] text-ink md:text-2xl">
+                Deploy, repo, or both.
+              </p>
+            </div>
+            <div className="flex flex-col gap-3 md:col-span-8 md:flex-row md:justify-end">
+              {project.live && (
+                <a
+                  data-cursor="link"
+                  href={project.live}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="group inline-flex items-center justify-center gap-2 bg-rust px-7 py-4 font-display text-lg tracking-[-0.01em] text-bone transition-opacity hover:opacity-85 md:text-xl"
+                >
+                  Open live demo
+                  <ArrowUpRight
+                    size={20}
+                    strokeWidth={1.75}
+                    className="transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5"
+                  />
+                </a>
+              )}
+              {project.github && (
+                <a
+                  data-cursor="link"
+                  href={project.github}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="group inline-flex items-center justify-center gap-2 border border-ink px-7 py-4 font-display text-lg tracking-[-0.01em] text-ink transition-colors hover:border-rust hover:text-rust md:text-xl"
+                >
+                  View source
+                  <ArrowUpRight
+                    size={20}
+                    strokeWidth={1.75}
+                    className="transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5"
+                  />
+                </a>
+              )}
+            </div>
+          </div>
+        </section>
+      )}
+
       <section
         id="wp-meta"
         className="border-b border-ink/10 py-14 md:py-20"
@@ -325,7 +377,7 @@ export function WorkView({ project, next, index, total }: Props) {
             </ul>
           </div>
 
-          <div className="md:col-span-5">
+          <div className="md:col-span-7">
             <p className="mb-4 font-mono text-xs uppercase tracking-[0.25em] text-ink-2">
               Summary
             </p>
@@ -333,50 +385,6 @@ export function WorkView({ project, next, index, total }: Props) {
               {project.summary}
             </p>
           </div>
-
-          {(project.live || project.github) && (
-            <div className="md:col-span-2">
-              <p className="mb-4 font-mono text-xs uppercase tracking-[0.25em] text-ink-2">
-                View
-              </p>
-              <ul className="flex flex-col gap-2 font-mono text-xs">
-                {project.live && (
-                  <li>
-                    <a
-                      data-cursor="link"
-                      href={project.live}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="group inline-flex items-center gap-1 text-ink transition-colors hover:text-rust"
-                    >
-                      Live
-                      <ArrowUpRight
-                        size={12}
-                        className="transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5"
-                      />
-                    </a>
-                  </li>
-                )}
-                {project.github && (
-                  <li>
-                    <a
-                      data-cursor="link"
-                      href={project.github}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="group inline-flex items-center gap-1 text-ink transition-colors hover:text-rust"
-                    >
-                      Source
-                      <ArrowUpRight
-                        size={12}
-                        className="transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5"
-                      />
-                    </a>
-                  </li>
-                )}
-              </ul>
-            </div>
-          )}
 
           <div className="grid grid-cols-2 gap-8 md:col-span-12 md:mt-2 md:grid-cols-3 md:gap-10">
             {project.metrics.map((m) => (

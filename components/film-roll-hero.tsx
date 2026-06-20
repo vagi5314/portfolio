@@ -41,44 +41,44 @@ export function FilmRollHero() {
       const start = () => {
         if (cancelled) return;
 
-        const intro = gsap.timeline({ delay: 0.4 });
+        const intro = gsap.timeline({ delay: 0.3 });
         intro.from(".hero-eyebrow", {
           opacity: 0,
           y: 20,
-          duration: 0.7,
+          duration: 0.6,
           ease: "power2.out",
         });
         intro.from(
           ".hero-line",
           {
-            clipPath: "inset(0 100% 0 0)",
+            opacity: 0,
             y: 30,
-            duration: 1.0,
+            duration: 0.7,
             ease: "power3.out",
-            stagger: 0.1,
+            stagger: 0.08,
           },
-          "-=0.5"
+          "-=0.4"
         );
         intro.from(
           ".hero-meta",
           {
             opacity: 0,
             y: 12,
-            duration: 0.6,
+            duration: 0.5,
             ease: "power2.out",
-            stagger: 0.07,
+            stagger: 0.06,
           },
-          "-=0.7"
-        );
-        intro.from(
-          ".hero-cta",
-          { opacity: 0, y: 16, duration: 0.6, ease: "power2.out" },
           "-=0.5"
         );
         intro.from(
+          ".hero-cta",
+          { opacity: 0, y: 16, duration: 0.5, ease: "power2.out" },
+          "-=0.4"
+        );
+        intro.from(
           ".hero-scroll-hint",
-          { opacity: 0, y: 8, duration: 0.4, ease: "power2.out" },
-          "-=0.3"
+          { opacity: 0, y: 8, duration: 0.35, ease: "power2.out" },
+          "-=0.25"
         );
 
         if (cancelled) {
@@ -216,7 +216,6 @@ export function FilmRollHero() {
                 key={i}
                 className="hero-line block"
                 style={{
-                  clipPath: "inset(0 0% 0 0)",
                   fontStyle: i === 1 ? "italic" : "normal",
                   color: i === 1 ? "var(--color-bone-2)" : undefined,
                 }}
