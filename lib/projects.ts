@@ -70,6 +70,12 @@ export const projects: Project[] = [
         text: "A bare probability score is operationally useless. Which airline is the risk coming from? Is it the time of day? The route? SHAP (Shapley Additive Explanations) decomposes every prediction into feature-level contributions, so the dashboard can show a pilot or dispatcher exactly which factors drove the score.",
       },
       {
+        type: "image",
+        src: "/projects/aero-metric/body-1.png",
+        alt: "AeroMetric Risk Simulator with a flight filled in — predicted risk score and per-feature SHAP contribution bars",
+        caption: "Risk Simulator — DL · ATL → JFK on a Wednesday at 2 PM. Every feature's SHAP contribution is shown as a bar, so the score is auditable, not opaque.",
+      },
+      {
         type: "quote",
         text: "A raw probability score is useless for operational decision-making — the system had to be a diagnostic tool, not a black box.",
       },
@@ -77,6 +83,12 @@ export const projects: Project[] = [
       {
         type: "p",
         text: "Three real deployment headaches. First, Railway's health checks timed out while the model loaded — I implemented a Fast-Start Lifespan so uvicorn binds the port instantly and loads heavy assets in the background. Second, Vercel preview domains broke CORS — fixed with a stateless middleware using allow_credentials=False. Third, Docker path mismatches between Windows and Linux — resolved with absolute paths and a root-context Dockerfile.",
+      },
+      {
+        type: "image",
+        src: "/projects/aero-metric/body-2.png",
+        alt: "AeroMetric Tech Intelligence tab — model, validation set, and pipeline metadata",
+        caption: "Tech Intelligence — model spec, validation cohort (500k stratified Parquet sample of 5.8M BTS records), and the train/serve shape behind every prediction.",
       },
       {
         type: "metrics",
@@ -145,10 +157,22 @@ export const projects: Project[] = [
         type: "p",
         text: "The final ranking is grouped into four analytical pillars: Infrastructure (Internet, secure servers, mobile subscriptions), Human Capital (education baselines, HDI), Innovation (R&D, developer engagement), and AI Ecosystem (publications, patents, policy maturity). Each pillar contributes weighted score to the final 0–100 ranking.",
       },
+      {
+        type: "image",
+        src: "/projects/global-ai-readiness/body-1.png",
+        alt: "Global AI Readiness diamond/radar chart comparing selected countries across the four pillars",
+        caption: "Diamond chart — two or more countries overlaid. The wider the shape, the more well-rounded the nation; the deeper any axis, the stronger that pillar.",
+      },
       { type: "h2", text: "Static JSON, zero DB latency" },
       {
         type: "p",
         text: "I exported the finished Pandas DataFrame as a flat data.json array and built a lightweight Next.js dashboard that loads it from a CDN. No database, no API roundtrip. The Python pipeline runs offline; the dashboard is a pure frontend consumer. Filter, sort, hover, drill into any nation's score — all client-side, all instant.",
+      },
+      {
+        type: "image",
+        src: "/projects/global-ai-readiness/body-2.png",
+        alt: "Global AI Readiness overall score bar chart with selected countries side-by-side",
+        caption: "Overall scores — taller bars are more AI-ready. Click any nation in the picker to add it to the comparison set.",
       },
       {
         type: "quote",
@@ -260,6 +284,12 @@ export const projects: Project[] = [
         type: "code",
         language: "text",
         code: "Receive → HMAC Verify → Rate Limit → Idempotency\n   → Bot & Spam Filter → Validate & Sanitize\n   → Enrich → Score → Route → Respond → Telegram",
+      },
+      {
+        type: "image",
+        src: "/projects/leadsentry/body-1.png",
+        alt: "LeadSentry n8n workflow canvas — the full 31-node pipeline from webhook to response, with the Telegram alert branch",
+        caption: "The full n8n workflow. Five defensive gates (HMAC, rate, idempotency, bot, validate) gate the scoring engine; warm/hot tiers branch into a Telegram alert alongside the HTTP response.",
       },
       { type: "h2", text: "Two-axis scoring, one composite" },
       {

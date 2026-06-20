@@ -152,7 +152,13 @@ export function LiquidCursor() {
       const armIdle = () => {
         if (idleTimer) window.clearTimeout(idleTimer);
         idleTimer = window.setTimeout(() => {
-          gsap.to([ringRef.current, dotRef.current, glowRef.current].filter(Boolean), {
+          const targets: HTMLDivElement[] = [
+            ringRef.current,
+            dotRef.current,
+            glowRef.current,
+          ].filter((el): el is HTMLDivElement => el !== null);
+          if (targets.length === 0) return;
+          gsap.to(targets, {
             opacity: 0,
             duration: FADE_MS / 1000,
             ease: "power2.out",
@@ -165,7 +171,13 @@ export function LiquidCursor() {
           window.clearTimeout(idleTimer);
           idleTimer = null;
         }
-        gsap.to([ringRef.current, dotRef.current, glowRef.current].filter(Boolean), {
+        const targets: HTMLDivElement[] = [
+          ringRef.current,
+          dotRef.current,
+          glowRef.current,
+        ].filter((el): el is HTMLDivElement => el !== null);
+        if (targets.length === 0) return;
+        gsap.to(targets, {
           opacity: 1,
           duration: FADE_MS / 1000,
           ease: "power2.out",
@@ -204,7 +216,13 @@ export function LiquidCursor() {
           window.clearTimeout(idleTimer);
           idleTimer = null;
         }
-        gsap.to([ringRef.current, dotRef.current, glowRef.current].filter(Boolean), {
+        const targets: HTMLDivElement[] = [
+          ringRef.current,
+          dotRef.current,
+          glowRef.current,
+        ].filter((el): el is HTMLDivElement => el !== null);
+        if (targets.length === 0) return;
+        gsap.to(targets, {
           opacity: 0,
           duration: FADE_MS / 1000,
           ease: "power2.out",

@@ -253,7 +253,6 @@ export function Contact() {
                 <MagneticButtonV2
                   type="submit"
                   disabled={status === "sending"}
-                  aria-label="Send message"
                   className={cn(
                     "h-11 rounded-full px-5 transition-colors",
                     status === "sent"

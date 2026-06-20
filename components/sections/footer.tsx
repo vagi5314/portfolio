@@ -96,7 +96,8 @@ export function Footer() {
               strokeWidth="1.5"
               strokeLinecap="round"
               strokeLinejoin="round"
-              aria-label="Mark"
+              aria-hidden
+              role="img"
             >
               {/* V */}
               <path className="footer-mark" d="M14 18 L40 64 L66 18" />

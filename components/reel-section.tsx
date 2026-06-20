@@ -48,8 +48,6 @@ const GRID: Pose[] = [
   { xPct: 22,  yPct: 14,  rot: 0, scale: 0.92, widthVw: 34, z: 4 },
 ];
 
-const LIGHT_CARDS = new Set<string>([]);
-
 function lerp(a: number, b: number, t: number): number {
   return a + (b - a) * t;
 }
@@ -317,10 +315,6 @@ export function ReelSection() {
           </div>
 
           {projects.map((p, i) => {
-            const isLight = LIGHT_CARDS.has(p.slug);
-            const captionBg = isLight
-              ? "bg-bone/90 text-ink"
-              : "bg-ink/70 text-bone";
             return (
               <WarpLink
                 key={p.slug}
@@ -363,8 +357,7 @@ export function ReelSection() {
                 </div>
                 <span
                   className={cn(
-                    "reel-cover-tag absolute left-3 top-3 z-10 rounded-full px-2 py-1 font-mono text-[10px] uppercase tracking-[0.22em] backdrop-blur-sm sm:text-xs",
-                    captionBg
+                    "reel-cover-tag absolute left-3 top-3 z-10 rounded-full bg-ink/70 px-2 py-1 font-mono text-[10px] uppercase tracking-[0.22em] text-bone backdrop-blur-sm sm:text-xs"
                   )}
                 >
                   {(i + 1).toString().padStart(2, "0")} · {p.tag}

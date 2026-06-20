@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef, useState, useCallback, useId, type ReactNode } from "react";
+import { useRef, useState, useCallback, useId, useEffect, type ReactNode } from "react";
 import { gsap } from "@/lib/gsap";
 import { cn } from "@/lib/utils";
 
@@ -9,21 +9,23 @@ interface ImageDistortionProps {
   className?: string;
 }
 
+function getCanHover(): boolean {
+  if (typeof window === "undefined") return true;
+  return window.matchMedia("(hover: hover)").matches;
+}
+
 export function ImageDistortion({ children, className }: ImageDistortionProps) {
   const filterId = useId();
   const wrapperRef = useRef<HTMLDivElement>(null);
   const filterRef = useRef<SVGFilterElement>(null);
   const [active, setActive] = useState(false);
+  const canHoverRef = useRef(true);
 
-  // Touch-only devices never trigger mouse hover, and SVG feTurbulence
-  // (numOctaves: 2) is CPU-bound — animating baseFrequency on every
-  // hover would burn battery and drop frames on phones. The reel card
-  // also wraps the distortion in RGBShift + Image, so the visual
-  // effect of a static filter on touch is invisible anyway.
-  const canHover =
-    typeof window !== "undefined"
-      ? window.matchMedia("(hover: hover)").matches
-      : true;
+  useEffect(() => {
+    canHoverRef.current = getCanHover();
+  }, []);
+
+  const canHover = canHoverRef.current;
 
   const handleMouseEnter = useCallback(() => {
     if (!canHover) return;

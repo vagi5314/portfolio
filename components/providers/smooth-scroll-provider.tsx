@@ -50,7 +50,8 @@ export function SmoothScrollProvider({
     const reduceMotion = window.matchMedia(
       "(prefers-reduced-motion: reduce)"
     ).matches;
-    if (reduceMotion) return;    const lenis = new Lenis({
+    if (reduceMotion) return;
+    const lenis = new Lenis({
       duration: 1.2,
       smoothWheel: true,
       syncTouch: false,
