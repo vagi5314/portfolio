@@ -1,0 +1,380 @@
+@import "tailwindcss";
+
+@view-transition {
+  navigation: auto;
+}
+
+
+.link-underline {
+  position: relative;
+  display: inline-block;
+}
+.link-underline::after {
+  content: '';
+  position: absolute;
+  bottom: -2px;
+  left: 0;
+  width: 100%;
+  height: 1px;
+  background: currentColor;
+  transform: scaleX(0);
+  transform-origin: left center;
+  transition: transform 0.4s cubic-bezier(0.65, 0, 0.35, 1);
+}
+.link-underline:hover::after {
+  transform: scaleX(1);
+}
+
+/* Scroll velocity blur */
+.velocity-blur {
+  transition: filter 0.15s ease-out;
+}
+
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation-duration: 0.55s;
+  animation-timing-function: cubic-bezier(0.65, 0, 0.35, 1);
+}
+
+::view-transition-group(*) {
+  animation-duration: 0.55s;
+  animation-timing-function: cubic-bezier(0.65, 0, 0.35, 1);
+}
+
+::view-transition-old(cs-*),
+::view-transition-new(cs-*) {
+  animation-duration: 0.95s;
+  animation-timing-function: cubic-bezier(0.7, 0, 0.2, 1);
+  mix-blend-mode: normal;
+}
+
+::view-transition-old(cs-*) {
+  animation-name: warp-out;
+  filter: url(#warp);
+}
+
+::view-transition-new(cs-*) {
+  animation-name: warp-in;
+  filter: url(#warp);
+}
+
+@keyframes warp-out {
+  0% {
+    transform: scale(1) translateY(0);
+    filter: url(#warp) brightness(1);
+  }
+  30% {
+    transform: scale(1.04) translateY(-1.5%);
+    filter: url(#warp) brightness(0.6);
+  }
+  100% {
+    transform: scale(1.06) translateY(-2.5%);
+    filter: url(#warp) brightness(0.4);
+  }
+}
+
+@keyframes warp-in {
+  0% {
+    transform: scale(0.94) translateY(2.5%);
+    filter: url(#warp) brightness(0.4);
+  }
+  70% {
+    transform: scale(1.005) translateY(0.5%);
+    filter: url(#warp) brightness(1.1);
+  }
+  100% {
+    transform: scale(1) translateY(0);
+    filter: url(#warp) brightness(1);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  ::view-transition-old(cs-*),
+  ::view-transition-new(cs-*) {
+    animation-duration: 0.01ms !important;
+    filter: none !important;
+  }
+}
+
+@theme inline {
+  --color-ink: #0E0E10;
+  --color-ink-2: #1A1A1D;
+  --color-ink-3: #2A2A2E;
+  --color-bone: #F2EDE4;
+  --color-bone-2: #E5DED1;
+  --color-bone-3: #D8D0BF;
+  --color-rust: #E85A2B;
+  --color-rust-2: #D14820;
+  --color-rust-3: #5C1A08;
+
+  --font-display: var(--font-fraunces);
+  --font-editorial: var(--font-instrument-serif);
+  --font-sans: var(--font-inter);
+  --font-mono: var(--font-jetbrains-mono);
+
+  --spacing-section: 8rem;
+  --spacing-gutter: 1.5rem;
+  --spacing-column: 4rem;
+
+  --z-section-content: 1;
+  --z-section-pin: 10;
+  --z-overlay: 40;
+  --z-chapter-counter: 80;
+  --z-nav-rail: 80;
+  --z-progress-bar: 90;
+  --z-modal: 100;
+  --z-cursor: 200;
+  --z-preloader: 300;
+
+  --nav-rail-safe: 56px;
+}
+
+:root {
+  --background: var(--color-ink);
+  --foreground: var(--color-bone);
+  --foreground-secondary: var(--color-bone-2);
+  --surface: var(--color-ink-2);
+  --accent: var(--color-rust);
+  --hairline: color-mix(in oklch, var(--color-bone) 12%, transparent);
+  color-scheme: dark;
+}
+
+html,
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+  transition: background 0.6s ease, color 0.6s ease;
+}
+
+/* Hide native cursor only when the LiquidCursor has confirmed mount
+   and the input is fine-pointer. Native cursor stays as fallback for
+   touch, keyboard, AT users, and during initial paint. */
+html.has-custom-cursor,
+html.has-custom-cursor body,
+html.has-custom-cursor a,
+html.has-custom-cursor button,
+html.has-custom-cursor [role="button"],
+html.has-custom-cursor input,
+html.has-custom-cursor textarea,
+html.has-custom-cursor select {
+  cursor: none;
+}
+
+html {
+  font-feature-settings: "ss01", "cv11";
+}
+
+::selection {
+  background: var(--color-rust);
+  color: var(--color-bone);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+
+  /* Reduced motion: unpin pinned sections, surface every card/panel,
+     and turn horizontal/scroll-bound choreography into a static stack
+     so all content is reachable without animation. */
+  .reel-pin,
+  .process-pin,
+  .about-pin {
+    position: static !important;
+  }
+  .reel-cover {
+    position: static !important;
+    width: 100% !important;
+    max-width: 40rem !important;
+    margin-left: auto !important;
+    margin-right: auto !important;
+    transform: none !important;
+  }
+  .reel-summary-item,
+  .process-card,
+  .about-pin article {
+    position: static !important;
+    opacity: 1 !important;
+    pointer-events: auto !important;
+    transform: none !important;
+  }
+  .reel-summary-item *,
+  .process-card * {
+    opacity: 1 !important;
+    transform: none !important;
+    clip-path: none !important;
+  }
+  .reel-cover-shade {
+    display: none !important;
+  }
+  #about,
+  #work,
+  #work-summaries,
+  #process {
+    height: auto !important;
+  }
+}
+
+button:focus-visible,
+a:focus-visible,
+[role="button"]:focus-visible,
+input:focus-visible,
+textarea:focus-visible {
+  outline: 2px solid var(--color-rust);
+  outline-offset: 3px;
+}
+
+@utility hairline {
+  border-color: color-mix(in oklch, var(--color-bone) 12%, transparent);
+}
+
+@utility hairline-strong {
+  border-color: color-mix(in oklch, var(--color-bone) 24%, transparent);
+}
+
+@utility text-balance {
+  text-wrap: balance;
+}
+
+@utility text-pretty {
+  text-wrap: pretty;
+}
+
+@utility no-scrollbar {
+  scrollbar-width: none;
+  &::-webkit-scrollbar { display: none; }
+}
+
+/* Content-visibility for off-screen sections — GPU skips rendering until near viewport */
+@utility content-lazy {
+  content-visibility: auto;
+  contain-intrinsic-size: 0 800px;
+}
+
+/* Spotlight reveal — cursor position updated via direct transform
+   on a fixed div (GPU-composited), not CSS vars that retrigger paint. */
+@utility spotlight {
+  position: relative;
+}
+
+@utility type-display {
+  font-size: clamp(3.5rem, 8vw, 9rem);
+  line-height: 0.95;
+  letter-spacing: -0.04em;
+  font-weight: 300;
+  font-family: var(--font-display);
+}
+
+@utility type-editorial {
+  font-size: clamp(3rem, 7vw, 7rem);
+  line-height: 1.0;
+  letter-spacing: -0.03em;
+  font-weight: 400;
+  font-family: var(--font-editorial);
+}
+
+@utility type-heading {
+  font-size: clamp(1.5rem, 3vw, 3.5rem);
+  line-height: 1.05;
+  letter-spacing: -0.025em;
+  font-weight: 300;
+  font-family: var(--font-display);
+}
+
+@utility type-body {
+  font-size: 16px;
+  line-height: 1.6;
+  font-family: var(--font-sans);
+}
+
+@utility type-meta {
+  font-size: 12px;
+  line-height: 1.4;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  font-family: var(--font-mono);
+}
+
+@utility min-text-meta {
+  font-size: max(12px, 0.75rem);
+}
+
+/* Safe-zone padding so content never slides under the right nav-rail */
+@utility pr-safe {
+  padding-right: var(--nav-rail-safe);
+}
+
+/* Skip-to-content link — visually hidden until focused, then floats top-left */
+.skip-link {
+  position: fixed;
+  top: 0.5rem;
+  left: 0.5rem;
+  z-index: var(--z-modal);
+  padding: 0.5rem 0.75rem;
+  font-family: var(--font-mono);
+  font-size: 12px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--color-bone);
+  background: var(--color-ink-2);
+  border: 1px solid var(--accent);
+  transform: translateY(-200%);
+  transition: transform 0.2s ease;
+}
+.skip-link:focus-visible {
+  transform: translateY(0);
+  outline: 2px solid var(--color-rust);
+  outline-offset: 3px;
+}
+
+@keyframes slide-up-fade {
+  from {
+    opacity: 0;
+    transform: translateY(100%);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@utility animate-slide-up-fade {
+  animation: slide-up-fade 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@keyframes scroll-wheel {
+  0% {
+    transform: translateY(0);
+    opacity: 0;
+  }
+  20% {
+    opacity: 1;
+  }
+  80% {
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(8px);
+    opacity: 0;
+  }
+}
+
+.animate-scroll-wheel {
+  animation: scroll-wheel 1.6s cubic-bezier(0.65, 0, 0.35, 1) infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .animate-scroll-wheel {
+    animation: none;
+    opacity: 0.7;
+  }
+}

@@ -1,0 +1,65 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 1000" preserveAspectRatio="xMidYMid slice" role="img" aria-label="Global AI Readiness cover">
+<rect x="0" y="0" width="1600" height="1000" rx="0" fill="#0E0E10" opacity="1.0"/>
+<ellipse cx="800" cy="500" rx="211.6" ry="8" fill="none" stroke="#26262A" stroke-width="0.5" opacity="0.5"/>
+<ellipse cx="800" cy="500" rx="291.2" ry="8" fill="none" stroke="#26262A" stroke-width="0.5" opacity="0.5"/>
+<ellipse cx="800" cy="500" rx="342.4" ry="8" fill="none" stroke="#26262A" stroke-width="0.5" opacity="0.5"/>
+<ellipse cx="800" cy="500" rx="360.0" ry="8" fill="none" stroke="#26262A" stroke-width="0.5" opacity="0.5"/>
+<ellipse cx="800" cy="500" rx="342.4" ry="8" fill="none" stroke="#26262A" stroke-width="0.5" opacity="0.5"/>
+<ellipse cx="800" cy="500" rx="291.2" ry="8" fill="none" stroke="#26262A" stroke-width="0.5" opacity="0.5"/>
+<ellipse cx="800" cy="500" rx="211.6" ry="8" fill="none" stroke="#26262A" stroke-width="0.5" opacity="0.5"/>
+<path d="M 440 140.0 Q 800 200.0 1160 140.0" fill="none" stroke="#26262A" stroke-width="0.5" opacity="0.5"/>
+<path d="M 440 230.0 Q 800 290.0 1160 230.0" fill="none" stroke="#26262A" stroke-width="0.5" opacity="0.5"/>
+<path d="M 440 320.0 Q 800 380.0 1160 320.0" fill="none" stroke="#26262A" stroke-width="0.5" opacity="0.5"/>
+<path d="M 440 410.0 Q 800 470.0 1160 410.0" fill="none" stroke="#26262A" stroke-width="0.5" opacity="0.5"/>
+<path d="M 440 500.0 Q 800 560.0 1160 500.0" fill="none" stroke="#26262A" stroke-width="0.5" opacity="0.5"/>
+<path d="M 440 590.0 Q 800 650.0 1160 590.0" fill="none" stroke="#26262A" stroke-width="0.5" opacity="0.5"/>
+<path d="M 440 680.0 Q 800 740.0 1160 680.0" fill="none" stroke="#26262A" stroke-width="0.5" opacity="0.5"/>
+<path d="M 440 770.0 Q 800 830.0 1160 770.0" fill="none" stroke="#26262A" stroke-width="0.5" opacity="0.5"/>
+<path d="M 440 860.0 Q 800 920.0 1160 860.0" fill="none" stroke="#26262A" stroke-width="0.5" opacity="0.5"/>
+<circle cx="584.00" cy="392.00" r="19.36" fill="#E85A2B" opacity="0.92"/>
+<circle cx="584.00" cy="392.00" r="25.36" fill="#E85A2B" opacity="0.15"/>
+<circle cx="1001.60" cy="356.00" r="18.08" fill="#E85A2B" opacity="0.92"/>
+<circle cx="1001.60" cy="356.00" r="24.08" fill="#E85A2B" opacity="0.15"/>
+<circle cx="958.40" cy="464.00" r="17.12" fill="#F2EDE4" opacity="0.85"/>
+<circle cx="771.20" cy="298.40" r="18.40" fill="#E85A2B" opacity="0.92"/>
+<circle cx="771.20" cy="298.40" r="24.40" fill="#E85A2B" opacity="0.15"/>
+<circle cx="800.00" cy="320.00" r="17.92" fill="#E85A2B" opacity="0.92"/>
+<circle cx="800.00" cy="320.00" r="23.92" fill="#E85A2B" opacity="0.15"/>
+<circle cx="785.60" cy="341.60" r="17.60" fill="#E85A2B" opacity="0.92"/>
+<circle cx="785.60" cy="341.60" r="23.60" fill="#E85A2B" opacity="0.15"/>
+<circle cx="1059.20" cy="370.40" r="18.24" fill="#E85A2B" opacity="0.92"/>
+<circle cx="1059.20" cy="370.40" r="24.24" fill="#E85A2B" opacity="0.15"/>
+<circle cx="1044.80" cy="356.00" r="17.76" fill="#E85A2B" opacity="0.92"/>
+<circle cx="1044.80" cy="356.00" r="23.76" fill="#E85A2B" opacity="0.15"/>
+<circle cx="1016.00" cy="586.40" r="18.56" fill="#E85A2B" opacity="0.92"/>
+<circle cx="1016.00" cy="586.40" r="24.56" fill="#E85A2B" opacity="0.15"/>
+<circle cx="828.80" cy="428.00" r="17.44" fill="#F2EDE4" opacity="0.85"/>
+<circle cx="584.00" cy="248.00" r="17.76" fill="#E85A2B" opacity="0.92"/>
+<circle cx="584.00" cy="248.00" r="23.76" fill="#E85A2B" opacity="0.15"/>
+<circle cx="1059.20" cy="701.60" r="17.28" fill="#F2EDE4" opacity="0.85"/>
+<circle cx="656.00" cy="644.00" r="15.36" fill="#E5DED1" opacity="0.55"/>
+<circle cx="828.80" cy="701.60" r="14.24" fill="#E5DED1" opacity="0.55"/>
+<circle cx="814.40" cy="226.40" r="18.08" fill="#E85A2B" opacity="0.92"/>
+<circle cx="814.40" cy="226.40" r="24.08" fill="#E85A2B" opacity="0.15"/>
+<circle cx="785.60" cy="298.40" r="17.60" fill="#E85A2B" opacity="0.92"/>
+<circle cx="785.60" cy="298.40" r="23.60" fill="#E85A2B" opacity="0.15"/>
+<circle cx="800.00" cy="334.40" r="17.92" fill="#E85A2B" opacity="0.92"/>
+<circle cx="800.00" cy="334.40" r="23.92" fill="#E85A2B" opacity="0.15"/>
+<circle cx="800.00" cy="248.00" r="17.76" fill="#E85A2B" opacity="0.92"/>
+<circle cx="800.00" cy="248.00" r="23.76" fill="#E85A2B" opacity="0.15"/>
+<circle cx="785.60" cy="226.40" r="17.60" fill="#E85A2B" opacity="0.92"/>
+<circle cx="785.60" cy="226.40" r="23.60" fill="#E85A2B" opacity="0.15"/>
+<circle cx="828.80" cy="269.60" r="16.96" fill="#F2EDE4" opacity="0.85"/>
+<circle cx="886.40" cy="464.00" r="16.48" fill="#F2EDE4" opacity="0.85"/>
+<circle cx="785.60" cy="557.60" r="12.80" fill="#E5DED1" opacity="0.55"/>
+<circle cx="843.20" cy="464.00" r="13.60" fill="#E5DED1" opacity="0.55"/>
+<circle cx="569.60" cy="500.00" r="14.88" fill="#E5DED1" opacity="0.55"/>
+<text x="1200" y="80" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="12" font-weight="600" fill="#E5DED1" letter-spacing="4" text-anchor="start">TOP SCORERS</text>
+<text x="1200" y="110" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="14" font-weight="500" fill="#F2EDE4" letter-spacing="2" text-anchor="start">01  USA  96.0</text>
+<text x="1200" y="136" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="14" font-weight="500" fill="#F2EDE4" letter-spacing="2" text-anchor="start">02  SGP  91.0</text>
+<text x="1200" y="162" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="14" font-weight="500" fill="#F2EDE4" letter-spacing="2" text-anchor="start">03  GBR  90.0</text>
+<text x="80" y="880" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="88" font-weight="700" fill="#F2EDE4" letter-spacing="6" text-anchor="start">GLOBAL AI</text>
+<text x="80" y="920" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="56" font-weight="400" fill="#E5DED1" letter-spacing="6" text-anchor="start">READINESS INDEX</text>
+<text x="80" y="960" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="16" font-weight="500" fill="#E5DED1" letter-spacing="3" text-anchor="start">26 NATIONS  ·  4 PILLARS  ·  0–100</text>
+<text x="80" y="990" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="12" font-weight="600" fill="#E85A2B" letter-spacing="3" text-anchor="start">USA · 94.2   CHN · 88.0   SGP · 91.0</text>
+</svg>

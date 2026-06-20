@@ -1,0 +1,79 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 1000" preserveAspectRatio="xMidYMid slice" role="img" aria-label="JobFlow cover">
+<rect x="0" y="0" width="1600" height="1000" rx="0" fill="#0E0E10" opacity="1.0"/>
+<circle cx="800.00" cy="460.00" r="50.00" fill="#E85A2B" opacity="0.25"/>
+<rect x="730" y="434" width="140" height="52" rx="6" fill="#E85A2B" opacity="1.0"/>
+<text x="800" y="466" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="28" font-weight="700" fill="#F2EDE4" letter-spacing="4" text-anchor="middle">n8n</text>
+<line x1="800.0" y1="230.0" x2="800" y2="460" stroke="#E5DED1" stroke-width="1.0" opacity="0.35"/>
+<rect x="722.0" y="208.0" width="156" height="44" rx="4" fill="#1A1A1D" opacity="1.0" stroke="#E5DED1" stroke-width="0.6"/>
+<text x="800.0" y="235.0" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="12" font-weight="600" fill="#F2EDE4" letter-spacing="2" text-anchor="middle">LINKEDIN</text>
+<line x1="979.8212409676469" y1="316.5973455724913" x2="800" y2="460" stroke="#E5DED1" stroke-width="1.0" opacity="0.35"/>
+<rect x="901.8212409676469" y="294.5973455724913" width="156" height="44" rx="4" fill="#1A1A1D" opacity="1.0" stroke="#E5DED1" stroke-width="0.6"/>
+<text x="979.8212409676469" y="321.5973455724913" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="12" font-weight="600" fill="#F2EDE4" letter-spacing="2" text-anchor="middle">INDEED</text>
+<line x1="1024.2334198018193" y1="511.1798148099523" x2="800" y2="460" stroke="#E5DED1" stroke-width="1.0" opacity="0.35"/>
+<rect x="946.2334198018193" y="489.1798148099523" width="156" height="44" rx="4" fill="#1A1A1D" opacity="1.0" stroke="#E5DED1" stroke-width="0.6"/>
+<text x="1024.2334198018193" y="516.1798148099523" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="12" font-weight="600" fill="#F2EDE4" letter-spacing="2" text-anchor="middle">SIMPLY</text>
+<line x1="899.7932599970384" y1="667.2228396175565" x2="800" y2="460" stroke="#E5DED1" stroke-width="1.0" opacity="0.35"/>
+<rect x="821.7932599970384" y="645.2228396175565" width="156" height="44" rx="4" fill="#1A1A1D" opacity="1.0" stroke="#E5DED1" stroke-width="0.6"/>
+<text x="899.7932599970384" y="672.2228396175565" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="12" font-weight="600" fill="#F2EDE4" letter-spacing="2" text-anchor="middle">INTERNSHALA</text>
+<line x1="700.2067400029616" y1="667.2228396175565" x2="800" y2="460" stroke="#E5DED1" stroke-width="1.0" opacity="0.35"/>
+<rect x="622.2067400029616" y="645.2228396175565" width="156" height="44" rx="4" fill="#1A1A1D" opacity="1.0" stroke="#E5DED1" stroke-width="0.6"/>
+<text x="700.2067400029616" y="672.2228396175565" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="12" font-weight="600" fill="#F2EDE4" letter-spacing="2" text-anchor="middle">REMOTEOK</text>
+<line x1="575.7665801981806" y1="511.17981480995235" x2="800" y2="460" stroke="#E5DED1" stroke-width="1.0" opacity="0.35"/>
+<rect x="497.7665801981806" y="489.17981480995235" width="156" height="44" rx="4" fill="#1A1A1D" opacity="1.0" stroke="#E5DED1" stroke-width="0.6"/>
+<text x="575.7665801981806" y="516.1798148099524" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="12" font-weight="600" fill="#F2EDE4" letter-spacing="2" text-anchor="middle">WWR</text>
+<line x1="620.1787590323531" y1="316.59734557249135" x2="800" y2="460" stroke="#E5DED1" stroke-width="1.0" opacity="0.35"/>
+<rect x="542.1787590323531" y="294.59734557249135" width="156" height="44" rx="4" fill="#1A1A1D" opacity="1.0" stroke="#E5DED1" stroke-width="0.6"/>
+<text x="620.1787590323531" y="321.59734557249135" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="12" font-weight="600" fill="#F2EDE4" letter-spacing="2" text-anchor="middle">ARBEITNOW</text>
+<circle cx="1110.00" cy="460.00" r="1.60" fill="#E5DED1" opacity="0.35"/>
+<circle cx="1106.98" cy="503.14" r="1.60" fill="#E5DED1" opacity="0.35"/>
+<circle cx="1097.99" cy="545.45" r="1.60" fill="#E5DED1" opacity="0.35"/>
+<circle cx="1083.20" cy="586.09" r="1.60" fill="#E5DED1" opacity="0.35"/>
+<circle cx="1062.89" cy="624.27" r="1.60" fill="#E5DED1" opacity="0.35"/>
+<circle cx="1037.47" cy="659.26" r="1.60" fill="#E5DED1" opacity="0.35"/>
+<circle cx="1007.43" cy="690.37" r="1.60" fill="#E5DED1" opacity="0.35"/>
+<circle cx="973.35" cy="717.00" r="1.60" fill="#E5DED1" opacity="0.35"/>
+<circle cx="935.90" cy="738.63" r="1.60" fill="#E5DED1" opacity="0.35"/>
+<circle cx="895.80" cy="754.83" r="1.60" fill="#E5DED1" opacity="0.35"/>
+<circle cx="853.83" cy="765.29" r="1.60" fill="#E5DED1" opacity="0.35"/>
+<circle cx="810.82" cy="769.81" r="1.60" fill="#E5DED1" opacity="0.35"/>
+<circle cx="767.60" cy="768.30" r="1.60" fill="#E5DED1" opacity="0.35"/>
+<circle cx="725.00" cy="760.79" r="1.60" fill="#E5DED1" opacity="0.35"/>
+<circle cx="683.87" cy="747.43" r="1.60" fill="#E5DED1" opacity="0.35"/>
+<circle cx="645.00" cy="728.47" r="1.60" fill="#E5DED1" opacity="0.35"/>
+<circle cx="609.14" cy="704.28" r="1.60" fill="#E5DED1" opacity="0.35"/>
+<circle cx="577.00" cy="675.34" r="1.60" fill="#E5DED1" opacity="0.35"/>
+<circle cx="549.20" cy="642.21" r="1.60" fill="#E5DED1" opacity="0.35"/>
+<circle cx="526.29" cy="605.54" r="1.60" fill="#E5DED1" opacity="0.35"/>
+<circle cx="508.70" cy="566.03" r="1.60" fill="#E5DED1" opacity="0.35"/>
+<circle cx="496.77" cy="524.45" r="1.60" fill="#E5DED1" opacity="0.35"/>
+<circle cx="490.76" cy="481.62" r="1.60" fill="#E5DED1" opacity="0.35"/>
+<circle cx="490.76" cy="438.38" r="1.60" fill="#E5DED1" opacity="0.35"/>
+<circle cx="496.77" cy="395.55" r="1.60" fill="#E5DED1" opacity="0.35"/>
+<circle cx="508.70" cy="353.97" r="1.60" fill="#E5DED1" opacity="0.35"/>
+<circle cx="526.29" cy="314.46" r="1.60" fill="#E5DED1" opacity="0.35"/>
+<circle cx="549.20" cy="277.79" r="1.60" fill="#E5DED1" opacity="0.35"/>
+<circle cx="577.00" cy="244.66" r="1.60" fill="#E5DED1" opacity="0.35"/>
+<circle cx="609.14" cy="215.72" r="1.60" fill="#E5DED1" opacity="0.35"/>
+<circle cx="645.00" cy="191.53" r="1.60" fill="#E5DED1" opacity="0.35"/>
+<circle cx="683.87" cy="172.57" r="1.60" fill="#E5DED1" opacity="0.35"/>
+<circle cx="725.00" cy="159.21" r="1.60" fill="#E5DED1" opacity="0.35"/>
+<circle cx="767.60" cy="151.70" r="1.60" fill="#E5DED1" opacity="0.35"/>
+<circle cx="810.82" cy="150.19" r="1.60" fill="#E5DED1" opacity="0.35"/>
+<circle cx="853.83" cy="154.71" r="1.60" fill="#E5DED1" opacity="0.35"/>
+<circle cx="895.80" cy="165.17" r="1.60" fill="#E5DED1" opacity="0.35"/>
+<circle cx="935.90" cy="181.37" r="1.60" fill="#E5DED1" opacity="0.35"/>
+<circle cx="973.35" cy="203.00" r="1.60" fill="#E5DED1" opacity="0.35"/>
+<circle cx="1007.43" cy="229.63" r="1.60" fill="#E5DED1" opacity="0.35"/>
+<circle cx="1037.47" cy="260.74" r="1.60" fill="#E5DED1" opacity="0.35"/>
+<circle cx="1062.89" cy="295.73" r="1.60" fill="#E5DED1" opacity="0.35"/>
+<circle cx="1083.20" cy="333.91" r="1.60" fill="#E5DED1" opacity="0.35"/>
+<circle cx="1097.99" cy="374.55" r="1.60" fill="#E5DED1" opacity="0.35"/>
+<circle cx="1106.98" cy="416.86" r="1.60" fill="#E5DED1" opacity="0.35"/>
+<text x="800" y="120" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="14" font-weight="600" fill="#E5DED1" letter-spacing="4" text-anchor="middle">SCRAPE</text>
+<text x="800" y="870" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="14" font-weight="600" fill="#E5DED1" letter-spacing="4" text-anchor="middle">SCORE → DEDUPE → SURFACE</text>
+<text x="80" y="880" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="88" font-weight="700" fill="#F2EDE4" letter-spacing="6" text-anchor="start">JOBFLOW</text>
+<text x="80" y="920" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="18" font-weight="500" fill="#E5DED1" letter-spacing="3" text-anchor="start">7 BOARDS  ·  15 INDUSTRIES  ·  &lt; 90s</text>
+<text x="80" y="950" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="14" font-weight="600" fill="#E85A2B" letter-spacing="3" text-anchor="start">RUN-20260616-181613  ·  239 JOBS  ·  3 HIGH-MATCH</text>
+<text x="1520" y="80" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="14" font-weight="500" fill="#E5DED1" letter-spacing="3" text-anchor="end">02 / 04</text>
+<text x="1520" y="104" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="12" font-weight="500" fill="#E85A2B" letter-spacing="3" text-anchor="end">jobs · automation</text>
+</svg>
