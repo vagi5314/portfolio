@@ -44,7 +44,7 @@ export function About() {
             start: "top top",
             end: "+=500%",
             pin: ".about-pin",
-            scrub: 0.15,
+            scrub: 0,
             invalidateOnRefresh: true,
             anticipatePin: 1,
           },
@@ -58,56 +58,14 @@ export function About() {
           .map((p) => p.querySelector<HTMLElement>(".about-panel-corner"))
           .filter((el): el is HTMLElement => el !== null);
 
-        const lastInnerOp = new Float32Array(inners.length);
-        const lastCornerOp = new Float32Array(corners.length);
-        inners.forEach((el, i) => {
-          if (i === 0) {
-            el.style.opacity = "1";
-          } else {
-            el.style.opacity = "0";
-          }
-          el.style.willChange = "opacity";
+        inners.forEach((el) => {
+          el.style.opacity = "1";
         });
-        corners.forEach((el, i) => {
-          if (i !== 0) {
-            el.style.willChange = "opacity";
-          }
+        corners.forEach((el) => {
+          el.style.opacity = "1";
         });
-
-        const totalDistance = () =>
-          window.innerWidth * Math.max(0, panels.length - 1);
-
-        const setOp = (el: HTMLElement, slot: Float32Array, i: number, v: number) => {
-          if (Math.abs(slot[i] - v) < 0.01) return;
-          slot[i] = v;
-          gsap.set(el, { opacity: v });
-        };
-
-        const updatePanelOpacities = () => {
-          const p = tween.progress();
-          const panelStride = window.innerWidth;
-          const offset = p * totalDistance();
-          for (let i = 0; i < panels.length; i++) {
-            if (i === 0) continue;
-            const panelLeft = i * panelStride;
-            const viewportLeft = offset;
-            const overlap = Math.max(
-              0,
-              Math.min(panelLeft + panelStride, viewportLeft + window.innerWidth) -
-                Math.max(panelLeft, viewportLeft)
-            );
-            const f = overlap / panelStride;
-            const op = Math.min(1, Math.max(0, f * 2));
-            if (inners[i]) setOp(inners[i], lastInnerOp, i, op);
-            if (corners[i]) setOp(corners[i], lastCornerOp, i, op);
-          }
-        };
-
-        tween.eventCallback("onUpdate", updatePanelOpacities);
-        updatePanelOpacities();
 
         return () => {
-          tween.eventCallback("onUpdate", null);
           tween.kill();
         };
       });
