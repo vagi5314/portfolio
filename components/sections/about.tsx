@@ -58,14 +58,53 @@ export function About() {
           .map((p) => p.querySelector<HTMLElement>(".about-panel-corner"))
           .filter((el): el is HTMLElement => el !== null);
 
+        const lastInnerOp = new Float32Array(inners.length);
+        const lastCornerOp = new Float32Array(corners.length);
+
+        const totalDistance = () =>
+          window.innerWidth * Math.max(0, panels.length - 1);
+
+        const setOp = (el: HTMLElement, slot: Float32Array, i: number, v: number) => {
+          if (Math.abs(slot[i] - v) < 0.01) return;
+          slot[i] = v;
+          gsap.set(el, { opacity: v });
+        };
+
         inners.forEach((el) => {
-          el.style.opacity = "1";
+          el.style.opacity = "0";
+          el.style.willChange = "opacity";
         });
         corners.forEach((el) => {
-          el.style.opacity = "1";
+          el.style.opacity = "0";
+          el.style.willChange = "opacity";
         });
 
+        const updatePanelOpacities = () => {
+          const p = tween.progress();
+          const stride = window.innerWidth;
+          const offset = p * totalDistance();
+          const slotHalf = 0.5 * stride;
+          const fadeWindow = 0.15 * stride;
+          for (let i = 0; i < panels.length; i++) {
+            const dist = Math.abs(offset - i * stride);
+            let op: number;
+            if (dist < slotHalf - fadeWindow) {
+              op = 1;
+            } else if (dist > slotHalf + fadeWindow) {
+              op = 0;
+            } else {
+              op = 1 - (dist - (slotHalf - fadeWindow)) / (2 * fadeWindow);
+            }
+            if (inners[i]) setOp(inners[i], lastInnerOp, i, op);
+            if (corners[i]) setOp(corners[i], lastCornerOp, i, op);
+          }
+        };
+
+        tween.eventCallback("onUpdate", updatePanelOpacities);
+        updatePanelOpacities();
+
         return () => {
+          tween.eventCallback("onUpdate", null);
           tween.kill();
         };
       });
