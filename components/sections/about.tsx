@@ -46,7 +46,6 @@ export function About() {
             pin: ".about-pin",
             scrub: 0,
             invalidateOnRefresh: true,
-            anticipatePin: 1,
           },
         });
 
